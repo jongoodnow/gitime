@@ -5,7 +5,8 @@ import commit
 import export
 import new_invoice
 import settings
-import switch_invoice
+import status
+import checkout_invoice
 import timer
 
 def add_subcommand(subparsers, name, help, func, args):
@@ -25,16 +26,11 @@ add_subcommand(subparsers, 'commit', 'Run a regular git commit, but also log you
     }),
 ])
 
-add_subcommand(subparsers, 'export', 'Export an invoice.', export.export_main, [
-    ({'-i','--invoice'}, {
+add_subcommand(subparsers, 'settings', 'Set up some default options.', settings.settings_main, [
+    ({'-r', '--rate',}, {
         'nargs': '?',
-        'default': 'CURRENT INVOICE',
-        'help': 'The name of the invoice to export. Defaults to the active invoice',
-    }),
-    ({'-f', '--format',}, {
-        'nargs': '?',
-        'default': 'csv',
-        'help': 'Choose the export format. Defaults to csv.',
+        'default': '0',
+        'help': 'Set the hourly rate that is used by default on all your invoices.',
     }),
 ])
 
@@ -49,17 +45,17 @@ add_subcommand(subparsers, 'new-invoice', 'Start a new invoice.', new_invoice.ne
     }),
 ])
 
-add_subcommand(subparsers, 'settings', 'Set up some default options.', settings.settings_main, [
-    ({'-r', '--rate',}, {
-        'nargs': '?',
-        'default': '10',
-        'help': 'Set the hourly rate that is used by default on all your invoices.',
-    }),
-])
-
 add_subcommand(subparsers, 'checkout-invoice', 'Switch your new commits to a different invoice.', checkout_invoice.checkout_invoice_main, [
     ({'name',}, {
         'help': 'Name of invoice to checkout.',
+    }),
+])
+
+add_subcommand(subparsers, 'status', "See what's in your current invoice", status.status_main, [
+    ({'-i','--invoice'}, {
+        'nargs': '?',
+        'default': 'CURRENT INVOICE',
+        'help': 'Choose a different invoice to view the status of.',
     }),
 ])
 
@@ -67,6 +63,19 @@ add_subcommand(subparsers, 'timer', 'Control your commit timer.', timer.timer_ma
     ({'action',}, {
         'choices': ['start', 'pause', 'reset',],
         'help': 'Start the timer, pause it, or reset it. The timer is reset automatically when you make a commit.',
+    }),
+])
+
+add_subcommand(subparsers, 'export', 'Export an invoice.', export.export_main, [
+    ({'-i','--invoice'}, {
+        'nargs': '?',
+        'default': 'CURRENT INVOICE',
+        'help': 'The name of the invoice to export. Defaults to the active invoice',
+    }),
+    ({'-f', '--format',}, {
+        'nargs': '?',
+        'default': 'csv',
+        'help': 'Choose the export format. Defaults to csv.',
     }),
 ])
 

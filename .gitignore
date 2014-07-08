@@ -1,1 +1,3 @@
 *.py[cod]
+logs/
+*.log
