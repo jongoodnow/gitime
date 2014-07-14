@@ -1,6 +1,6 @@
-from __future__ import unicode_literals
-from util import cache
+from __future__ import unicode_literals, print_function
 import sqlite3
+import sys
 import re
 
 DB_NAME = 'gitime.db'
@@ -18,7 +18,7 @@ def _db_connect(action):
         c = conn.cursor()
         results = action(conn, c)
     except sqlite3.Error as e:
-        print "Database Error: %s" %e
+        print("Database Error: %s" %e, file=sys.stderr)
     finally:
         if conn:
             conn.close()
@@ -62,6 +62,7 @@ def first_time_setup():
 
 
 def _insert(statement):
+    """ Runs a execute command. It should be a INSERT statment. """
 
     def insert_action(conn, c):
         statement(c)
@@ -81,48 +82,65 @@ def insert_commit(message, date, hours, invoice_id):
         (message, date, hours, invoice_id)))
 
 
-def _query(statement):
+def _query(statement, fetchall=True):
+    """ Runs an execute command. It should be a SELECT statement.
+        opts:
+        * fetchall - in most cases, fetchall should be True because it cannot
+                     be known for sure that there is only one result. But queries
+                     that involve a rowid are guaranteed to return one result,
+                     so fetchone is a more useful command.
+    """
 
     def query_action(conn, c):
         statement(c)
-        return c.fetchall()
+        return c.fetchall() if fetchall else c.fetchone()
 
     return _db_connect(query_action)
 
 
 def query_user(rowid):
-    return _query(lambda c: c.execute("SELECT * FROM user WHERE rowid=?", (rowid,)))
+    return _query(lambda c: c.execute("SELECT * FROM user WHERE rowid=?", 
+        (rowid,)), False)
 
 
 def query_invoice(unique):
     """ invoices can be queried by either name or id. """
     if type(unique) is int:
-        return _query(lambda c: c.execute("SELECT * FROM invoice WHERE rowid=?", (unique,)))
+        if unique > invoice_count():
+            raise Exception("Rowid %d not in table invoice" %unique)
+        return _query(lambda c: c.execute("SELECT * FROM invoice WHERE rowid=?", 
+            (unique,)), False)
     elif type(unique) is str:
-        return _query(lambda c: c.execute("SELECT * FROM invoice WHERE name=?", (unique,)))
+        return _query(lambda c: c.execute("SELECT * FROM invoice WHERE name=?", 
+            (unique,)))
     else:
         raise Exception("Invoice unique identifier not valid type.")
 
 
 def query_commit(rowid):
-    return _query(lambda c: c.execute("SELECT * FROM gtcommit WHERE rowid=?", (rowid,)))
+    return _query(lambda c: c.execute("SELECT * FROM gtcommit WHERE rowid=?", 
+        (rowid,)), False)
 
 
-def query_invoice_commits(rowid):
-    return _query(lambda c: c.execute("SELECT * FROM gtcommit WHERE commit_invoice=?", (rowid,)))
+def query_invoice_commit_meta(rowid):
+    return _query(lambda c: c.execute("SELECT * FROM gtcommit WHERE commit_invoice=?", 
+        (rowid,)))
 
 
-def _update(statement):
+def invoice_count():
+    return _query(lambda c: c.execute("SELECT COUNT(*) FROM invoice"))
+
+
+def update(statement):
+    """ Runs an execute command. It should be an UPDATE statement.
+        Unlike `_insert` and `_query`, this function is public because
+        there is no clean and efficient way to create a general purpose
+        update function. This requires raw SQL to be written outside of
+        `database.py`, for this case only.
+    """
 
     def update_action(conn, c):
         statement(c)
         conn.commit()
 
     _db_connect(update_action)
-
-
-def update_user(rowid, rate, rounding, timer_running, timer_start, timer_total, active_invoice):
-    return _update(lambda c: c.execute("""
-        UPDATE user SET rate=?, rounding=?, timer_running=?, timer_start=?, timer_total=?, active_invoice=?
-        WHERE rowid=?
-    """, (rate, rounding, timer_running, timer_start, timer_total, active_invoice, rowid)))
