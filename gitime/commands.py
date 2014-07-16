@@ -1,6 +1,6 @@
 from __future__ import unicode_literals, print_function
 from user import User
-from commit import Commit
+#from commit import Commit
 from invoice import Invoice
 import sys
 

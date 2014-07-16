@@ -1,13 +1,10 @@
 from __future__ import unicode_literals, print_function
-from datetime import datetime
 import sys
-import calendar
+import time
+import math
 import database as db
 
-def unix_now():
-    now = datetime.now()
-    return calendar.timegm(now.tupletime())
-
+unix_now = lambda: math.floor(time.time())
 
 class User(object):
     """ Contains user data that is shared between invoices """

@@ -1,8 +1,6 @@
 from __future__ import unicode_literals
 import argparse
-import commit
-import invoice
-import user
+import commands
 
 
 def add_subcommand(subparsers, name, help, func, args):
@@ -17,27 +15,27 @@ def cmd():
 
     subparsers = parser.add_subparsers(help='sub-command help')
 
-    add_subcommand(subparsers, 'commit', 'Run a regular git commit, but also log your time.', commit.commit_main, [
+    add_subcommand(subparsers, 'commit', 'Run a regular git commit, but also log your time.', commands.commit_main, [
         ({'args',}, {
             'nargs': '+',
             'help': 'The normal arguments you would pass to your git commit.',
         }),
     ])
 
-    add_subcommand(subparsers, 'settings', 'Set up some default options.', user.settings_main, [
+    add_subcommand(subparsers, 'settings', 'Set up some default options.', commands.settings_main, [
         ({'-r', '--rate',}, {
             'nargs': '?',
             'default': '0',
             'help': 'Set the hourly rate that is used by default on all your invoices.',
         }),
-            ({'--round',}, {
+        ({'--round',}, {
             'nargs': '?',
             'default': '1',
             'help': 'Choose how to round the number of hours worked. Defaults to the nearest hour.',
         }),
     ])
 
-    add_subcommand(subparsers, 'new-invoice', 'Start a new invoice.', invoice.new_invoice_main, [
+    add_subcommand(subparsers, 'new-invoice', 'Start a new invoice.', commands.new_invoice_main, [
         ({'name',}, {
             'help': 'The name of the new invoice.',
         }),
@@ -53,13 +51,13 @@ def cmd():
         }),
     ])
 
-    add_subcommand(subparsers, 'checkout-invoice', 'Switch your new commits to a different invoice.', invoice.checkout_invoice_main, [
+    add_subcommand(subparsers, 'checkout-invoice', 'Switch your new commits to a different invoice.', commands.checkout_invoice_main, [
         ({'name',}, {
             'help': 'Name of invoice to checkout.',
         }),
     ])
 
-    add_subcommand(subparsers, 'status', "See what's in your current invoice", user.status_main, [
+    add_subcommand(subparsers, 'status', "See what's in your current invoice", commands.status_main, [
         ({'-i','--invoice'}, {
             'nargs': '?',
             'default': 'CURRENT INVOICE',
@@ -67,14 +65,14 @@ def cmd():
         }),
     ])
 
-    add_subcommand(subparsers, 'timer', 'Control your commit timer.', user.timer_main, [
+    add_subcommand(subparsers, 'timer', 'Control your commit timer.', commands.timer_main, [
         ({'action',}, {
             'choices': ['start', 'pause', 'reset',],
             'help': 'Start the timer, pause it, or reset it. The timer is reset automatically when you make a commit.',
         }),
     ])
 
-    add_subcommand(subparsers, 'export', 'Export an invoice.', invoice.export_invoice_main, [
+    add_subcommand(subparsers, 'export', 'Export an invoice.', commands.export_invoice_main, [
         ({'-i','--invoice'}, {
             'nargs': '?',
             'default': 'CURRENT INVOICE',

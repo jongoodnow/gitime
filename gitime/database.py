@@ -1,7 +1,6 @@
 from __future__ import unicode_literals, print_function
 import sqlite3
 import sys
-import re
 
 DB_NAME = 'gitime.db'
 
@@ -104,15 +103,17 @@ def query_user(rowid):
 
 
 def query_invoice(unique):
-    """ invoices can be queried by either name or id. """
+    """ invoices can be queried by either name or id. 
+        Queries for names will return the rowid as the last value
+    """
     if type(unique) is int:
         if unique > invoice_count():
             raise Exception("Rowid %d not in table invoice" %unique)
         return _query(lambda c: c.execute("SELECT * FROM invoice WHERE rowid=?", 
             (unique,)), False)
     elif type(unique) is str:
-        return _query(lambda c: c.execute("SELECT * FROM invoice WHERE name=?", 
-            (unique,)))
+        return _query(lambda c: c.execute("SELECT *, rowid FROM invoice WHERE name=?", 
+            (unique,)), False)
     else:
         raise Exception("Invoice unique identifier not valid type.")
 
@@ -123,6 +124,7 @@ def query_commit(rowid):
 
 
 def query_invoice_commit_meta(rowid):
+    """ List of tuples of commit metadata. """
     return _query(lambda c: c.execute("SELECT * FROM gtcommit WHERE commit_invoice=?", 
         (rowid,)))
 

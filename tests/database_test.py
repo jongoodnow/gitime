@@ -35,7 +35,7 @@ class TestDatabase(unittest.TestCase):
         commit_id = db.insert_commit('Did a thing', 1405184155, 2.0, invoice_id)
         self.assertEqual(db.query_user(1), (0.0, 1.0, 0, 0, 0, None))
         self.assertEqual(db.query_invoice(1), ('Cool Project', 20.0, 1.0))
-        self.assertEqual(db.query_invoice('Cool Project'), [('Cool Project', 20.0, 1.0)])
+        self.assertEqual(db.query_invoice('Cool Project'), ('Cool Project', 20.0, 1.0, 1))
         self.assertEqual(db.query_commit(1), ('Did a thing', 1405184155, 2.0, invoice_id))
         self.assertEqual(db.query_invoice_commit_meta(1), [('Did a thing', 1405184155, 2.0, invoice_id)])
 

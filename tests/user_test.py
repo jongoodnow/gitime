@@ -1,5 +1,6 @@
 import gitime.database as db
 import gitime.user as user
+import gitime.util as util
 import time
 import unittest
 import sqlite3
