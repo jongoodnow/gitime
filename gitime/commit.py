@@ -24,10 +24,7 @@ class Commit(object):
         self.message = message
         self.hours = hours
         self.invoice = Invoice(invoice)
-        if date:
-            self.date = date
-        else:
-            self.date = math.floor(time.time())
+        self.date = date if date is not None else math.floor(time.time())
         if new:
             self.rowid = db.insert_commit(
                 self.message, self.date, self.hours, self.invoice.rowid)

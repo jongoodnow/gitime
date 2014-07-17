@@ -15,7 +15,7 @@ $ gitime settings -r 50
 Start a new invoice.
 
 ```sh
-$ gitime new-invoice "Awesome Secret Project"
+$ gitime invoice -n "Awesome Secret Project"
 ```
 
 Time how long you've been working.

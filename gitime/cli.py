@@ -25,35 +25,43 @@ def cmd():
     add_subcommand(subparsers, 'settings', 'Set up some default options.', commands.settings_main, [
         ({'-r', '--rate',}, {
             'nargs': '?',
-            'default': '0',
+            'default': argparse.SUPPRESS,
             'help': 'Set the hourly rate that is used by default on all your invoices.',
         }),
         ({'--round',}, {
             'nargs': '?',
-            'default': '1',
+            'default': argparse.SUPPRESS,
             'help': 'Choose how to round the number of hours worked. Defaults to the nearest hour.',
+        }),
+        ({'-l', '--list',}, {
+            'help': 'List the currently set rate and rounding',
+            'action': 'store_true',
         }),
     ])
 
-    add_subcommand(subparsers, 'new-invoice', 'Start a new invoice.', commands.new_invoice_main, [
+    add_subcommand(subparsers, 'invoice', 'Switch to a different invoice, start a new one, or change stats.', commands.invoice_main, [
         ({'name',}, {
-            'help': 'The name of the new invoice.',
+            'help': 'The name of the invoice.',
+            'nargs': '?',
+            'default': argparse.SUPPRESS,
+        }),
+        ({'-n', '--new',}, {
+            'help': 'Create a new invoice. Without this flag, switch to an invoice that already exists.',
+            'action': 'store_true',
         }),
         ({'-r', '--rate',}, {
             'nargs': '?',
-            'default': '10',
+            'default': argparse.SUPPRESS,
             'help': 'Set the hourly rate. Defaults to the rate in your settings.',
         }),
         ({'--round',}, {
             'nargs': '?',
-            'default': '1',
+            'default': argparse.SUPPRESS,
             'help': 'Choose how to round the number of hours worked. Defaults to the nearest hour.',
         }),
-    ])
-
-    add_subcommand(subparsers, 'checkout-invoice', 'Switch your new commits to a different invoice.', commands.checkout_invoice_main, [
-        ({'name',}, {
-            'help': 'Name of invoice to checkout.',
+        ({'-l', '--list',}, {
+            'help': 'List all invoices.',
+            'action': 'store_true',
         }),
     ])
 

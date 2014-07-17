@@ -40,6 +40,19 @@ class Invoice(object):
     def set_active(self):
         self.user.set_active_invoice(self.rowid)
 
+    def set_rate(self, r):
+        self.rate = r
+        db.update(lambda c: c.execute("""
+            UPDATE invoice SET rate=? WHERE rowid=?
+        """, (self.rate, self.rowid)))
+
+    def set_rounding(self, r):
+        self.rounding = r
+        db.update(lambda c: c.execute("""
+            UPDATE invoice SET rounding=? WHERE rowid=?
+        """, (self.rounding, self.rowid)))
+
+
     def total_hours(self):
         commits = db.query_invoice_commit_meta(self.rowid)
         return sum(commit[2] for commit in commits)

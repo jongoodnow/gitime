@@ -1,8 +1,10 @@
 from __future__ import unicode_literals, print_function
 import sqlite3
 import sys
+import os
 
-DB_NAME = 'gitime.db'
+PATHCHAR = '\\' if sys.platform == 'win32' else '/'
+DB_NAME = PATHCHAR.join((os.path.abspath(os.path.dirname(__file__)), 'gitime.db'))
 
 def _db_connect(action):
     """ Connects to the database, does something, and closes.
@@ -130,7 +132,11 @@ def query_invoice_commit_meta(rowid):
 
 
 def invoice_count():
-    return _query(lambda c: c.execute("SELECT COUNT(*) FROM invoice"))
+    return _query(lambda c: c.execute("SELECT COUNT(*) FROM invoice"), False)
+
+
+def query_all_invoices():
+    return _query(lambda c: c.execute("SELECT * FROM invoice"))
 
 
 def update(statement):
