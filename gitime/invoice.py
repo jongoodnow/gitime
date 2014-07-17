@@ -52,9 +52,11 @@ class Invoice(object):
             UPDATE invoice SET rounding=? WHERE rowid=?
         """, (self.rounding, self.rowid)))
 
+    def get_commits(self):
+        return db.query_invoice_commit_meta(self.rowid)
 
     def total_hours(self):
-        commits = db.query_invoice_commit_meta(self.rowid)
+        commits = self.get_commits()
         return sum(commit[2] for commit in commits)
 
     def total_earnings(self):

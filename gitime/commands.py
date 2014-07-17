@@ -48,7 +48,23 @@ def invoice_main(args):
 
 
 def status_main(args):
-    pass
+    if hasattr(args, 'invoice'):
+        inv = Invoice(args.invoice)
+    else:
+        u = User()
+        inv = Invoice(u.active_invoice_rowid)
+    print(textwrap.dedent("""\
+        On invoice %s
+        Total Time Worked: %s hours
+        Total Charges:     $%s
+        Charges:""" 
+    %(inv.name, inv.total_hours(), inv.total_earnings())))
+    commits = inv.get_commits()
+    for com in commits:
+        hours = "%r hours" %com[2]
+        wspace = 19 - len(hours) * " "
+        message= com[1]
+        print(hours, wspace, message)
 
 
 def timer_main(args):

@@ -68,7 +68,7 @@ def cmd():
     add_subcommand(subparsers, 'status', "See what's in your current invoice", commands.status_main, [
         ({'-i','--invoice'}, {
             'nargs': '?',
-            'default': 'CURRENT INVOICE',
+            'default': argparse.SUPPRESS,
             'help': 'Choose a different invoice to view the status of.',
         }),
     ])

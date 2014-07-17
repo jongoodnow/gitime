@@ -1,5 +1,3 @@
-#! usr/bin/env python
+import cli
 
-from cli import cmd
-
-cmd()
+cli.cmd()
