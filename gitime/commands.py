@@ -5,6 +5,7 @@ from invoice import Invoice
 import database as db
 import sys
 import textwrap
+from datetime import datetime
 
 def settings_main(args):
     u = User()
@@ -17,8 +18,8 @@ def settings_main(args):
     if args.list:
         print(textwrap.dedent("""\
             These are your default values for all invoices created in the future:
-            Hourly Rate: %s
-            Round to: %s""" 
+            Hourly Rate: $%.2f
+            Round to: %f""" 
         %(u.rate, u.rounding)))
 
 
@@ -31,14 +32,18 @@ def invoice_main(args):
             if hasattr(args, 'round'):
                 kwargs['rounding'] = args.round
             inv = Invoice(args.name, **kwargs)
+            inv.set_active()
+            print("Future commits will now be sent to the invoice %s." %inv.name)
         else:
             inv = Invoice(args.name)
             if hasattr(args, 'rate'):
                 inv.set_rate(args.rate)
             if hasattr(args, 'round'):
                 inv.set_rounding(args.round)
-        inv.set_active()
-        print("Future commits will now be sent to the invoice %s." %inv.name)
+            u = User()
+            if u.active_invoice_rowid != inv.rowid:
+                inv.set_active()
+                print("Future commits will now be sent to the invoice %s." %inv.name)
     if args.list:
         count = db.invoice_count()[0]
         noun = 'invoice' if count == 1 else 'invoices'
@@ -56,7 +61,7 @@ def status_main(args):
     print(textwrap.dedent("""\
         On invoice %s
         Total Time Worked: %s hours
-        Total Charges:     $%s
+        Total Charges:     $%.2f
         Charges:""" 
     %(inv.name, inv.total_hours(), inv.total_earnings())))
     commits = inv.get_commits()
@@ -68,11 +73,34 @@ def status_main(args):
 
 
 def timer_main(args):
-    pass
+    u = User()
+    if not args.force:
+        if u.active_invoice_rowid == 0:
+            print(textwrap.dedent("""\
+                WARNING: You do not have an active invoice set. You won't be able to record your hours without one.
+                Create an invoice with the command: `gitime invoice -n <invoice name>` first,
+                or suppress this warning by running the timer with the --force flag."""), file=sys.stderr)
+            sys.exit()
+    if args.action == 'start':
+        u.start_timer()
+        print('Timer started at %s' %str(datetime.now()))
+    elif args.action == 'pause':
+        u.pause_timer()
+        print('Timer paused at %s' %str(datetime.now()))
+    elif args.action == 'reset':
+        u.reset_timer()
+    elif args.action == 'status':
+        if u.timer_running:
+            status = 'has been running since %s.' %str(datetime.fromtimestamp(u.timer_start))
+        else:
+            status = 'is not running.'
+        print('The timer %s' %status)
+        print('Total hours tracked: %.2f' %(u.time_tracked() / 3600))
 
 
 def commit_main(args):
-    pass
+    u = User()
+    
 
 
 def export_invoice_main(args):

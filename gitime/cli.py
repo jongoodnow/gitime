@@ -16,9 +16,35 @@ def cmd():
     subparsers = parser.add_subparsers(help='sub-command help')
 
     add_subcommand(subparsers, 'commit', 'Run a regular git commit, but also log your time.', commands.commit_main, [
-        ({'args',}, {
-            'nargs': '+',
-            'help': 'The normal arguments you would pass to your git commit.',
+        ({'-a', '--all',}, {
+            'action': 'store_true'
+            'help': 'commit all changed files',
+        }),
+        ({'-q', '--quiet',}, {
+            'action': 'store_true'
+            'help': 'suppress summary after successful commit',
+        }),
+        ({'-v', '--verbose',}, {
+            'action': 'store_true'
+            'help': 'show diff in commit message template',
+        }),
+        ({'-s', '--signoff',}, {
+            'action': 'store_true',
+            'help': 'add Signed-off-by:',
+        }),
+        ({'--fake',}, {
+            'action': 'store_true',
+            'help': 'Add this commit to the invoice, but don\'t make an actual commit.',
+        }),
+        ({'-m', '--message',}, {
+            'nargs': '?',
+            'default': argparse.SUPPRESS,
+            'help': 'commit message',
+        }),
+        ({'--time',}, {
+            'nargs': '?',
+            'default': argparse.SUPPRESS,
+            'help': 'Manually enter the time worked instead of using the timer.',
         }),
     ])
 
@@ -75,8 +101,12 @@ def cmd():
 
     add_subcommand(subparsers, 'timer', 'Control your commit timer.', commands.timer_main, [
         ({'action',}, {
-            'choices': ['start', 'pause', 'reset',],
+            'choices': ['start', 'pause', 'reset', 'status',],
             'help': 'Start the timer, pause it, or reset it. The timer is reset automatically when you make a commit.',
+        }),
+        ({'-f', '--force',}, {
+            'help': 'Suppress warnings.',
+            'action': 'store_true',
         }),
     ])
 
@@ -92,5 +122,6 @@ def cmd():
             'help': 'Choose the export format. Defaults to csv.',
         }),
     ])
+
     args = parser.parse_args()
     args.func(args)
