@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 import gitime.database as db
 import gitime.invoice as invoice
 import gitime.commit as commit
@@ -34,3 +35,20 @@ class TestInvoice(unittest.TestCase):
         self.assertEqual(com.date, 1405287929)
         self.assertEqual(com.invoice.name, 'some project')
         self.assertEqual(com.rowid, comid)
+
+    def test_parse_hours_flag(self):
+        args = ['commit', '-m', 'fooed a bar', '--hours', '3']
+        self.assertEqual(commit.parse_hours_flag(args), 3.0)
+        self.assertEqual(args, ['commit', '-m', 'fooed a bar'])
+        self.assertEqual(commit.parse_hours_flag(args), False)
+        self.assertEqual(args, ['commit', '-m', 'fooed a bar'])
+
+    def test_parse_commit_message(self):
+        self.assertEqual(commit.parse_commit_message(['commit', '-am', '"did a thing"']),
+            'did a thing')
+        self.assertEqual(commit.parse_commit_message(['commit', '-mq', '\'didn\\\'t do a thing\'', '--short']),
+            'didn\\\'t do a thing')
+        self.assertEqual(commit.parse_commit_message(['commit', '-a', '--message', '"did a thing"']),
+            'did a thing')
+        self.assertEqual(commit.parse_commit_message(['commit', '-a', '--message="did a thing"']),
+            'did a thing')

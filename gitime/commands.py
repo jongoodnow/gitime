@@ -1,6 +1,6 @@
 from __future__ import unicode_literals, print_function
 from user import User
-from commit import Commit
+from commit import Commit, parse_hours_flag
 from invoice import Invoice
 import database as db
 import sys
@@ -100,6 +100,9 @@ def timer_main(args):
 
 def commit_main(args):
     u = User()
+    hours = parse_hours_flag(args)
+    if hours:
+        com = Commit()
     
 
 

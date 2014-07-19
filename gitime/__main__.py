@@ -1,3 +1,3 @@
 import cli
 
-cli.cmd()
+cli.main()

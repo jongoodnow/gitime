@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 import argparse
 import commands
+import sys
 
 
 def add_subcommand(subparsers, name, help, func, args):
@@ -10,43 +11,13 @@ def add_subcommand(subparsers, name, help, func, args):
     subparser.set_defaults(func=func)
 
 
-def cmd():
+def cmd_handler():
     parser = argparse.ArgumentParser(description='Keep track of your billable hours along with your commits.')
 
-    subparsers = parser.add_subparsers(help='sub-command help')
+    subparsers = parser.add_subparsers()
 
-    add_subcommand(subparsers, 'commit', 'Run a regular git commit, but also log your time.', commands.commit_main, [
-        ({'-a', '--all',}, {
-            'action': 'store_true'
-            'help': 'commit all changed files',
-        }),
-        ({'-q', '--quiet',}, {
-            'action': 'store_true'
-            'help': 'suppress summary after successful commit',
-        }),
-        ({'-v', '--verbose',}, {
-            'action': 'store_true'
-            'help': 'show diff in commit message template',
-        }),
-        ({'-s', '--signoff',}, {
-            'action': 'store_true',
-            'help': 'add Signed-off-by:',
-        }),
-        ({'--fake',}, {
-            'action': 'store_true',
-            'help': 'Add this commit to the invoice, but don\'t make an actual commit.',
-        }),
-        ({'-m', '--message',}, {
-            'nargs': '?',
-            'default': argparse.SUPPRESS,
-            'help': 'commit message',
-        }),
-        ({'--time',}, {
-            'nargs': '?',
-            'default': argparse.SUPPRESS,
-            'help': 'Manually enter the time worked instead of using the timer.',
-        }),
-    ])
+    # include a commit subcommand for the help, even though it isn't used.
+    add_subcommand(subparsers, 'commit', 'Run a regular git commit, but also log your time.', commands.commit_main, [])
 
     add_subcommand(subparsers, 'settings', 'Set up some default options.', commands.settings_main, [
         ({'-r', '--rate',}, {
@@ -125,3 +96,21 @@ def cmd():
 
     args = parser.parse_args()
     args.func(args)
+
+
+def main():
+    if sys.argv[1] == 'commit':
+        # commits should not be handled by argparse because the command
+        # string must remain intact
+        if sys.argv[2] in ('-h', '--help'):
+            # however, argparse makes a nice help screen, so we'll use
+            # argparse here only if the user asks for help
+            parser = argparse.ArgumentParser(description='Run a regular git commit, but also log your time.')
+            parser.add_argument('--fake', help='Add this commit to the invoice, but don\'t make an actual commit.', action='store_true')
+            parser.add_argument('--hours', help='Manually enter the time worked instead of using the timer.', nargs='?', default='argparse.SUPPRESS')
+            args = parser.parse_args()
+        else:
+            commands.commit_main(sys.argv[1:])
+    else:
+        # every other command gets handled by argparse
+        cmd_handler()

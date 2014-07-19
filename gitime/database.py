@@ -113,7 +113,7 @@ def query_invoice(unique):
             raise Exception("Rowid %d not in table invoice" %unique)
         return _query(lambda c: c.execute("SELECT * FROM invoice WHERE rowid=?", 
             (unique,)), False)
-    elif type(unique) is str:
+    elif type(unique) in (str, unicode):
         return _query(lambda c: c.execute("SELECT *, rowid FROM invoice WHERE name=?", 
             (unique,)), False)
     else:
