@@ -20,7 +20,7 @@ def settings_main(args):
         print(textwrap.dedent("""\
             These are your default values for all invoices created in the future:
             Hourly Rate: $%.2f
-            Round to: %f""" 
+            Round to: %g""" 
         %(u.rate, u.rounding)))
 
 
@@ -67,9 +67,9 @@ def status_main(args):
     %(inv.name, inv.total_hours(), inv.total_earnings())))
     commits = inv.get_commits()
     for com in commits:
-        hours = "%r hours" %com[2]
-        wspace = 19 - len(hours) * " "
-        message = com[1]
+        hours = "%g hours" %com[2]
+        wspace = (17 - len(hours)) * " "
+        message = com[0]
         print(hours, wspace, message)
 
 
@@ -101,7 +101,7 @@ def timer_main(args):
 
 
 def commit_main(args):
-    # commits are NOT handled by argparse `args` are passed to this function
+    # commits are NOT handled by argparse. `args` are passed to this function
     # as they are from sys.argv.
     u = User()
     inv = Invoice(u.active_invoice_rowid)
@@ -112,22 +112,27 @@ def commit_main(args):
             Create an invoice with the command: `gitime invoice -n <invoice name>` first.
             Your commit has NOT been made."""), file=sys.stderr)
         sys.exit()
-    hours = parse_hours_flag(args)
-    if not hours:
+    hours = round(parse_hours_flag(args) / u.rounding) * u.rounding
+    if hours is False:
         hours = u.time_tracked()
-        if u.time_tracked() <= 0:
+        if hours <= 0:
             print(textwrap.dedent("""\
                 GITIME ERROR: You didn't specify a number of hours, and the timer hasn't recorded anything.
                 Run this command with the `--hours <hour count>` flag, or use the timer to track your time.
                 Your commit has NOT been made."""), file=sys.stderr)
             sys.exit()
         u.reset_timer()
-    com = Commit(message=parse_commit_message(args),
+    message = parse_commit_message(args)
+    if not message:
+        print("GITIME ERROR: Could not find a message in your commit.", file=sys.stderr)
+        sys.exit()
+    com = Commit(message=message,
                  hours=hours,
                  invoice=u.active_invoice_rowid)
-    print("GITIME: Your commit has been logged in invoice %s." %inv.name))
+    print("GITIME: Your commit has been logged in invoice %s." %inv.name)
     if '--fake' not in args:
         print("GITIME: Running your commit now...")
+        args[0] = 'git'
         os.system(" ".join(args))
 
 

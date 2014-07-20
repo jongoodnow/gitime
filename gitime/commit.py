@@ -54,7 +54,7 @@ def parse_hours_flag(args):
         try:
             hours = float(hours)
         except ValueError:
-            print("GITIME: %s is not a valid amount of hours. Your commit was NOT made. Try again." %hours,
+            print("GITIME ERROR: %s is not a valid amount of hours. Your commit was NOT made. Try again." %hours,
                 file=sys.stderr)
             sys.exit()
         else:
@@ -70,7 +70,24 @@ def parse_commit_message(args):
         * `--message "some message"`
         * `--message="some message"`
         Single quotes are okay too.
+        `args` is a list that should be formatted exactly as sys.argv
     """
-    strargs = " ".join(args)
-    reg = re.search(r"(\-\w*m\w*|\-\-message)(\s+|=)('(?:\\.|[^'])*'|\"(?:\\.|[^\"])*\")", strargs)
-    return reg.group(3).strip('"').strip("'") if reg else False
+    reg = re.compile(r"(\-\w*m\w*|\-\-message)(\s*|(='(?:\\.|[^'])*'|\"(?:\\.|[^\"])*\"))")
+    scan = [index for index, val in enumerate(args) for mat in [reg.search(val)] if mat]
+    if not scan:
+        return False
+    if len(scan) > 1:
+        print("GITIME ERROR: Your commit contains more than one message. Your commit was NOT made. Try again.",
+            file=sys.stderr)
+        sys.exit()
+    index = scan[0]
+    # check if the format is `--message="some message"`
+    format_reg = re.search(r"='((\\.|[^'])*?)'|\"((\\.|[^\"])*?)\"", args[index])
+    if format_reg is not None:
+        return format_reg.group().strip('=').strip('"').strip("'")
+    elif len(args) < index + 2:
+        print("GITIME ERROR: Your commit doesn't contain a message. Your commit was NOT made. Try again.",
+            file=sys.stderr)
+        sys.exit()
+    else:
+        return args[index + 1]

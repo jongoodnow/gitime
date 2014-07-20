@@ -110,7 +110,7 @@ def main():
             parser.add_argument('--hours', help='Manually enter the time worked instead of using the timer.', nargs='?', default='argparse.SUPPRESS')
             args = parser.parse_args()
         else:
-            commands.commit_main(sys.argv[1:])
+            commands.commit_main(sys.argv)
     else:
         # every other command gets handled by argparse
         cmd_handler()

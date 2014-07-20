@@ -58,9 +58,9 @@ class User(object):
 
     def time_tracked(self):
         if self.timer_running:
-            return unix_now() - self.timer_start + self.timer_total
+            return round((unix_now() - self.timer_start + self.timer_total) / 3600 / self.rounding) * self.rounding
         else:
-            return self.timer_total
+            return round(self.timer_total / 3600 / self.rounding) * self.rounding
 
     def set_rate(self, r):
         self.rate = r
