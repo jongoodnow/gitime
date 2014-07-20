@@ -1,10 +1,11 @@
 from __future__ import unicode_literals, print_function
 from user import User
-from commit import Commit, parse_hours_flag
+from commit import Commit, parse_hours_flag, parse_commit_message
 from invoice import Invoice
 import database as db
 import sys
 import textwrap
+import os
 from datetime import datetime
 
 def settings_main(args):
@@ -68,7 +69,7 @@ def status_main(args):
     for com in commits:
         hours = "%r hours" %com[2]
         wspace = 19 - len(hours) * " "
-        message= com[1]
+        message = com[1]
         print(hours, wspace, message)
 
 
@@ -77,7 +78,8 @@ def timer_main(args):
     if not args.force:
         if u.active_invoice_rowid == 0:
             print(textwrap.dedent("""\
-                WARNING: You do not have an active invoice set. You won't be able to record your hours without one.
+                WARNING: You do not have an active invoice set. 
+                You won't be able to record your hours without one.
                 Create an invoice with the command: `gitime invoice -n <invoice name>` first,
                 or suppress this warning by running the timer with the --force flag."""), file=sys.stderr)
             sys.exit()
@@ -99,11 +101,34 @@ def timer_main(args):
 
 
 def commit_main(args):
+    # commits are NOT handled by argparse `args` are passed to this function
+    # as they are from sys.argv.
     u = User()
+    inv = Invoice(u.active_invoice_rowid)
+    if u.active_invoice_rowid == 0:
+        print(textwrap.dedent("""\
+            GITIME ERROR: You do not have an active invoice set. 
+            You won't be able to record your hours without one.
+            Create an invoice with the command: `gitime invoice -n <invoice name>` first.
+            Your commit has NOT been made."""), file=sys.stderr)
+        sys.exit()
     hours = parse_hours_flag(args)
-    if hours:
-        com = Commit()
-    
+    if not hours:
+        hours = u.time_tracked()
+        if u.time_tracked() <= 0:
+            print(textwrap.dedent("""\
+                GITIME ERROR: You didn't specify a number of hours, and the timer hasn't recorded anything.
+                Run this command with the `--hours <hour count>` flag, or use the timer to track your time.
+                Your commit has NOT been made."""), file=sys.stderr)
+            sys.exit()
+        u.reset_timer()
+    com = Commit(message=parse_commit_message(args),
+                 hours=hours,
+                 invoice=u.active_invoice_rowid)
+    print("GITIME: Your commit has been logged in invoice %s." %inv.name))
+    if '--fake' not in args:
+        print("GITIME: Running your commit now...")
+        os.system(" ".join(args))
 
 
 def export_invoice_main(args):

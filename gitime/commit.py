@@ -54,7 +54,7 @@ def parse_hours_flag(args):
         try:
             hours = float(hours)
         except ValueError:
-            print("%s is not a valid amount of hours. Your commit was NOT made. Try again." %hours,
+            print("GITIME: %s is not a valid amount of hours. Your commit was NOT made. Try again." %hours,
                 file=sys.stderr)
             sys.exit()
         else:

@@ -20,7 +20,7 @@ class User(object):
         self.timer_running = bool(meta[2])
         self.timer_start = meta[3]
         self.timer_total = meta[4]
-        self.active_invoice_rowid = meta[5]
+        self.active_invoice_rowid = meta[5] if len(meta) == 6 else 0
 
     def _timer_db_update(self):
         """ Set the timer on the database to match 
