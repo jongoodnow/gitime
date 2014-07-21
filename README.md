@@ -27,7 +27,7 @@ $ gitime timer start
 Make a commit as you would normally, but on the commit step, use `gitime` instead of `git`.
 
 ```sh
-$ git add .
+$ git add amazingfeature.bf
 $ gitime commit -m "Added a really cool thing"
 $ git push
 ```

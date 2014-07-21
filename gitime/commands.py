@@ -160,6 +160,9 @@ def export_invoice_main(args):
             writer.writerow(['Date', 'Hours', 'Task'])
             for com in commits:
                 writer.writerow([(datetime.fromtimestamp(com[1])).strftime('%m-%d-%Y'), com[2], com[0]])
+            writer.writerow([])
+            writer.writerow(['Total Time Worked:', "%s" %inv.total_hours()])
+            writer.writerow(['Total Charges:', "$%.2f" %inv.total_earnings()])
     else:
         print("The format you specified is not supported at this time.",
             file=sys.stderr)
