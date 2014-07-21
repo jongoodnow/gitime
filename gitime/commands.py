@@ -6,6 +6,7 @@ import database as db
 import sys
 import textwrap
 import os
+import csv
 from datetime import datetime
 
 def settings_main(args):
@@ -65,12 +66,14 @@ def status_main(args):
         Total Charges:     $%.2f
         Charges:""" 
     %(inv.name, inv.total_hours(), inv.total_earnings())))
-    commits = inv.get_commits()
+    commits = inv.get_commit_meta()
     for com in commits:
+        date = (datetime.fromtimestamp(com[1])).strftime('%m-%d-%Y')
+        wspace1 = (17 - len(date)) * " "
         hours = "%g hours" %com[2]
-        wspace = (17 - len(hours)) * " "
+        wspace2 = (17 - len(hours)) * " "
         message = com[0]
-        print(hours, wspace, message)
+        print(date, wspace1, hours, wspace2, message)
 
 
 def timer_main(args):
@@ -137,4 +140,26 @@ def commit_main(args):
 
 
 def export_invoice_main(args):
-    pass
+    if hasattr(args, 'invoice'):
+        inv = Invoice(args.invoice)
+    else:
+        u = User()
+        if u.active_invoice_rowid == 0:
+            print("You do not have an active invoice set. Create one with `gitime invoice -n <invoice name> first.",
+                file=sys.stderr)
+        inv = Invoice(u.active_invoice_rowid)
+    if hasattr(args, 'file'):
+        filename = args.file
+    else:
+        filename = inv.name
+        commits = inv.get_commit_meta()
+    if args.format == 'csv':
+        filename += '.csv'
+        with open(filename, 'wb') as fi:
+            writer = csv.writer(fi)
+            writer.writerow(['Date', 'Hours', 'Task'])
+            for com in commits:
+                writer.writerow([(datetime.fromtimestamp(com[1])).strftime('%m-%d-%Y'), com[2], com[0]])
+    else:
+        print("The format you specified is not supported at this time.",
+            file=sys.stderr)

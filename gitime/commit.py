@@ -69,7 +69,7 @@ def parse_commit_message(args):
         * `-m "some message"`
         * `--message "some message"`
         * `--message="some message"`
-        Single quotes are okay too.
+        Single quotes are allowed too.
         `args` is a list that should be formatted exactly as sys.argv
     """
     reg = re.compile(r"(\-\w*m\w*|\-\-message)(\s*|(='(?:\\.|[^'])*'|\"(?:\\.|[^\"])*\"))")
@@ -90,4 +90,7 @@ def parse_commit_message(args):
             file=sys.stderr)
         sys.exit()
     else:
-        return args[index + 1]
+        ret = args[index + 1]
+        # add quotes to the message so that git can understand it when the command is run
+        args[index + 1] = "".join(['"', args[index + 1], '"'])
+        return ret

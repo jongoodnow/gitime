@@ -84,13 +84,18 @@ def cmd_handler():
     add_subcommand(subparsers, 'export', 'Export an invoice.', commands.export_invoice_main, [
         ({'-i','--invoice'}, {
             'nargs': '?',
-            'default': 'CURRENT INVOICE',
+            'default': argparse.SUPPRESS,
             'help': 'The name of the invoice to export. Defaults to the active invoice',
         }),
         ({'-f', '--format',}, {
             'nargs': '?',
             'default': 'csv',
             'help': 'Choose the export format. Defaults to csv.',
+        }),
+        ({'-p', '--file',}, {
+            'nargs': '?',
+            'default': argparse.SUPPRESS,
+            'help': 'The name of the file to write. Defaults to the name of the invoice with an appropriate extension.',
         }),
     ])
 

@@ -36,6 +36,6 @@ class TestUser(unittest.TestCase):
 
     def test_timer_pause(self):
         self.user.start_timer()
-        user.unix_now = lambda: 1405287930
+        user.unix_now = lambda: 1405291529
         self.user.pause_timer()
         self.assertEqual(self.user.time_tracked(), 1)
