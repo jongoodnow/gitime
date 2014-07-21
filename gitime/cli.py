@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 import argparse
-import commands
 import sys
+import commands
 
 
 def add_subcommand(subparsers, name, help, func, args):
@@ -96,6 +96,13 @@ def cmd_handler():
             'nargs': '?',
             'default': argparse.SUPPRESS,
             'help': 'The name of the file to write. Defaults to the name of the invoice with an appropriate extension.',
+        }),
+    ])
+
+    add_subcommand(subparsers, 'reset', 'Deletes all invoices, commit records, and user preferences.', commands.reset_main, [
+        ({'-f','--force'}, {
+            'help': 'No confirmation message is sent before reset.',
+            'action': 'store_true',
         }),
     ])
 

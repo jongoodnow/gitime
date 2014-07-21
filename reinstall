@@ -1,0 +1,4 @@
+#!/bin/sh
+
+sudo pip uninstall -y gitime
+sudo python setup.py install

@@ -2,9 +2,21 @@ from __future__ import unicode_literals, print_function
 import sqlite3
 import sys
 import os
+import pwd
+import stat
+
+DB_PATH = os.path.expanduser('~/.gitime')
+
+if not os.path.exists(DB_PATH):
+    os.makedirs(DB_PATH)
+    if os.name in ('posix', 'mac'):
+        uname = os.getenv("SUDO_USER") or os.getenv("USER")
+        os.chown(DB_PATH, pwd.getpwnam(uname).pw_uid, pwd.getpwnam(uname).pw_gid)
+        os.chmod(DB_PATH, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
 
 PATHCHAR = '\\' if sys.platform == 'win32' else '/'
-DB_NAME = PATHCHAR.join((os.path.abspath(os.path.dirname(__file__)), 'gitime.db'))
+DB_NAME = PATHCHAR.join((DB_PATH, 'gitime.db'))
+
 
 def _db_connect(action):
     """ Connects to the database, does something, and closes.
@@ -20,6 +32,7 @@ def _db_connect(action):
         results = action(conn, c)
     except sqlite3.Error as e:
         print("Database Error: %s" %e, file=sys.stderr)
+        sys.exit()
     finally:
         if conn:
             conn.close()
@@ -60,6 +73,9 @@ def first_time_setup():
         conn.commit()
 
     _db_connect(setup_action)
+    uname = os.getenv("SUDO_USER") or os.getenv("USER")
+    os.chown(DB_NAME, pwd.getpwnam(uname).pw_uid, pwd.getpwnam(uname).pw_gid)
+    os.chmod(DB_NAME, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
 
 
 def _insert(statement):

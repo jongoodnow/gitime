@@ -2,3 +2,5 @@
 logs/
 *.log
 *.db
+*.egg-info
+build/

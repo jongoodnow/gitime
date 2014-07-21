@@ -166,3 +166,10 @@ def export_invoice_main(args):
     else:
         print("The format you specified is not supported at this time.",
             file=sys.stderr)
+
+
+def reset_main(args):
+    if not args.force:
+        if raw_input("WARNING: This will delete all invoices, commit logs, and user preferences. Your git repos won't be affected. You should export your invoices first. Are you sure? [y/N]") not in ('y', 'Y'):
+            sys.exit()
+    db.first_time_setup()
