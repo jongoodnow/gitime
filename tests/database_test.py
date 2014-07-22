@@ -16,7 +16,7 @@ class TestDatabase(unittest.TestCase):
 
     def test_new_database(self):
         self.c.execute('SELECT * FROM user')
-        self.assertEqual(self.c.fetchall(), [(0.0, 1.0, 0, 0, 0, None)])
+        self.assertEqual(self.c.fetchall(), [(0.0, 0.25, 0, 0, 0, 0)])
         self.c.execute('SELECT * FROM invoice')
         self.assertEqual(self.c.fetchall(), [])
         self.c.execute('SELECT * FROM gtcommit')
@@ -33,7 +33,7 @@ class TestDatabase(unittest.TestCase):
     def test_query(self):
         invoice_id = db.insert_invoice('Cool Project', 20.0, 1.0)
         commit_id = db.insert_commit('Did a thing', 1405184155, 2.0, invoice_id)
-        self.assertEqual(db.query_user(1), (0.0, 1.0, 0, 0, 0, None))
+        self.assertEqual(db.query_user(1), (0.0, 0.25, 0, 0, 0, 0))
         self.assertEqual(db.query_invoice(1), ('Cool Project', 20.0, 1.0))
         self.assertEqual(db.query_invoice('Cool Project'), ('Cool Project', 20.0, 1.0, 1))
         self.assertEqual(db.query_commit(1), ('Did a thing', 1405184155, 2.0, invoice_id))

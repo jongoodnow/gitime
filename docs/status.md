@@ -13,11 +13,11 @@ Example
 
 	$ gitime status
 	Total Time Worked: 7.0 hours
-	Total Charges:     $1400.00
+	Total Charges:     $350.00
 	Charges:
 	07-21-2014         2 hours         Fixed some css
 	07-21-2014         1 hours         Added a functor
-	07-21-2014         4 hours         Proved P!=NP
+	07-22-2014         4 hours         Proved P!=NP
 
 Options
 ----

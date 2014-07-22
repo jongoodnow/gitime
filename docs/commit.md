@@ -22,7 +22,7 @@ Your commit message and time will be logged in your active invoice, but no actua
 
 ####--hours [HOURS]
 
-In lieu of using the timer, you can manually specify the amount of hours worked. The number you enter is subject to the rounding rules set by your invoice. By default, this will round the number entered here to the nearest hour. If the timer has not tracked any time, this option is required. Otherwise, the timer values are used by default if this option is not specified.
+In lieu of using the timer, you can manually specify the amount of hours worked. The number you enter is subject to the rounding rules set by your invoice. By default, this will round the number entered here to the nearest quarter hour. If the timer has not tracked any time, this option is required. Otherwise, the timer values are used by default if this option is not specified.
 
 ####--help, -h
 

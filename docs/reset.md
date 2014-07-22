@@ -25,6 +25,7 @@ Options
 ----
 
 ####--force, -f
+
 This option is for the bold. Without it, you will be asked if you are sure you want to do this first. With it, no checks will occur.
 
 ####--help, -h

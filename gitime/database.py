@@ -48,12 +48,12 @@ def first_time_setup():
             DROP TABLE IF EXISTS invoice;
             DROP TABLE IF EXISTS gtcommit;
             CREATE TABLE user(
-                rate            REAL     DEFAULT 0  NOT NULL,
-                rounding        REAL     DEFAULT 1  NOT NULL,
-                timer_running   INTEGER  DEFAULT 0  NOT NULL,
-                timer_start     INTEGER  DEFAULT 0  NOT NULL,
-                timer_total     INTEGER  DEFAULT 0  NOT NULL,
-                active_invoice  INTEGER  DEFAULT 0  NOT NULL,
+                rate            REAL     DEFAULT 0     NOT NULL,
+                rounding        REAL     DEFAULT 0.25  NOT NULL,
+                timer_running   INTEGER  DEFAULT 0     NOT NULL,
+                timer_start     INTEGER  DEFAULT 0     NOT NULL,
+                timer_total     INTEGER  DEFAULT 0     NOT NULL,
+                active_invoice  INTEGER  DEFAULT 0     NOT NULL,
                 FOREIGN KEY(active_invoice) REFERENCES invoice(rowid)
             );
             CREATE TABLE invoice(

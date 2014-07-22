@@ -1,4 +1,4 @@
-Overview
+Gitime Overview
 ====
 
 Gitime lets you keep track of your billable hours along with your commits. Build an invoice with your tasks and hours worked from your commit messages.
@@ -6,7 +6,7 @@ Gitime lets you keep track of your billable hours along with your commits. Build
 Installation
 ----
 
-Gitime is written in Python and has no dependencies outside of the Python standard library. This means that you can use it on a variety of platforms, such as Windows, Linux, or Mac.
+Gitime has full support on Linux, and experimental support for Windows and Mac.
 
 You'll only need two things installed to use gitime:
 
@@ -30,7 +30,7 @@ The first thing you should do is set your standard hourly rate, if you have one.
 
 	$ gitime set -r 50
 
-By default, gitime will round your hours worked to the nearest hour. This can be changed to say, the nearest half-hour with:
+By default, gitime will round your hours worked to the nearest quarter hour. This can be changed to say, the nearest half-hour with:
 
 	$ gitime set --round 0.5
 

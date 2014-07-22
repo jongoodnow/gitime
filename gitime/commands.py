@@ -109,7 +109,7 @@ def timer_main(args):
         else:
             status = 'is not running.'
         print('The timer %s' %status)
-        print('Total hours tracked: %.2f' %(u.time_tracked() / 3600))
+        print('Total hours tracked: %.2f' %(u.time_tracked()))
 
 
 def commit_main(args):
@@ -180,6 +180,6 @@ def export_invoice_main(args):
 
 def reset_main(args):
     if not args.force:
-        if raw_input("WARNING: This will delete all invoices, commit logs, and user preferences. Your git repos won't be affected. You should export your invoices first. Are you sure? [y/N]") not in ('y', 'Y'):
+        if raw_input("WARNING: This will delete all invoices, commit logs, and user preferences. Your git repos won't be affected. You should export your invoices first. Are you sure? [y/N] ") not in ('y', 'Y'):
             sys.exit()
     db.first_time_setup()

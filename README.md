@@ -3,12 +3,14 @@ gitime
 
 Keep track of your billable hours along with your commits. Gitime lets you build an invoice with your tasks and hours worked from your commit messages.
 
+Read the docs for more details.
+
 Simple Usage
 ----
 
 Set your hourly rate.
 
-	$ gitime settings -r 50
+	$ gitime set -r 50
 
 Start a new invoice.
 
@@ -20,18 +22,23 @@ Time how long you've been working.
 
 Make a commit as you would normally, but on the commit step, use `gitime` instead of `git`.
 
-	$ git add amazingfeature.bf
+	$ git add feature.c
 	$ gitime commit -m "Added a really cool thing"
 	$ git push
+
+Or, if you don't like timers, record the time yourself with the `--hours` flag.
+
+	$ gitime commit -m "Proved Riemann Hypothesis" --hours 2
 
 Look at your invoice.
 
 	$ gitime status
 	On invoice Awesome Secret Project
-	Total time worked: 2 hours
-	Total charges:     $100.00
+	Total time worked: 3 hours
+	Total charges:     $150.00
 	Charges:
-	07-21-2014         2 hours         Added a really cool thing
+	07-21-2014         1 hours         Added a really cool thing
+	07-22-2014         2 hours         Proved Riemann Hypothesis
 
 When it's time to bill, export your invoice to a spreadsheet. Currently, the only format available is csv. More formats are coming soon.
 
@@ -42,7 +49,7 @@ Installation
 
 You'll need two things installed to use gitime:
 
-* [Git](http://git-scm.com/downloads)
+* [Git](http://git-scm.com/downloads), and an executable called `git` on your path
 * [Python 2.7](https://www.python.org/downloads/)
 
 Install the latest release with:
@@ -55,4 +62,7 @@ Or install the development version with:
 	$ cd gitime
 	$ python setup.py install
 
-More information is available in the docs.
+License
+----
+
+The MIT License

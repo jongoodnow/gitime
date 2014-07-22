@@ -1,4 +1,4 @@
-from __future__ import unicode_literals, print_function
+from __future__ import unicode_literals, print_function, division
 import sys
 import time
 import math
@@ -58,9 +58,9 @@ class User(object):
 
     def time_tracked(self):
         if self.timer_running:
-            return round((unix_now() - self.timer_start + self.timer_total) / 3600 / self.rounding) * self.rounding
+            return round((unix_now() - self.timer_start + self.timer_total) / 3600.0 / self.rounding) * self.rounding
         else:
-            return round(self.timer_total / 3600 / self.rounding) * self.rounding
+            return round(self.timer_total / 3600.0 / self.rounding) * self.rounding
 
     def set_rate(self, r):
         self.rate = r

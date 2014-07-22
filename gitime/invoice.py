@@ -1,5 +1,6 @@
 from __future__ import unicode_literals, print_function
 import sys
+import textwrap
 from user import User
 import database as db
 
@@ -33,6 +34,12 @@ class Invoice(object):
                 if raw_input("That invoice doesn't exist. Make a new one? [Y/n] ") == 'n':
                     sys.exit()
             self.name = unique
+            if rate is None and self.user.rate == 0:
+                print(textwrap.dedent("""\
+                    WARNING: Your default hourly rate is set to zero. 
+                    This means that no earnings will be recorded. 
+                    You can set your default rate with `gitime set -r <rate>` or 
+                    set the rate for this invoice with `gitime invoice <invoice name> -r <rate>`."""))
             self.rate = rate if rate is not None else self.user.rate
             self.rounding = rounding if rounding is not None else self.user.rounding
             self.rowid = db.insert_invoice(self.name, self.rate, self.rounding)
