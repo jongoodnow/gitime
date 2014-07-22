@@ -3,7 +3,7 @@ gitime
 
 Keep track of your billable hours along with your commits. Gitime lets you build an invoice with your tasks and hours worked from your commit messages.
 
-Read the docs for more details.
+[Read the docs](https://github.com/jongoodnow/gitime/tree/master/docs) for more details.
 
 Simple Usage
 ----
@@ -65,4 +65,4 @@ Or install the development version with:
 License
 ----
 
-The MIT License
+[The MIT License](https://github.com/jongoodnow/gitime/blob/master/LICENSE)

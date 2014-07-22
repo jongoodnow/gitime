@@ -25,7 +25,6 @@ setup(
     url="https://github.com/jongoodnow/gitime",
     keywords=['git', 'invoice', 'timer'],
     license="MIT",
-    platform="OS Independent",
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
