@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 import argparse
 import sys
+import gitime
 import commands
 
 
@@ -11,15 +12,16 @@ def add_subcommand(subparsers, name, help, func, args):
     subparser.set_defaults(func=func)
 
 
-def cmd_handler():
+def cmd_handler(cmd=None):
     parser = argparse.ArgumentParser(description='Keep track of your billable hours along with your commits.')
+    parser.add_argument('-v', '--version', help='Show the version of gitime installed.', action='version', version="gitime %s" %gitime.__version__)
 
     subparsers = parser.add_subparsers()
 
     # include a commit subcommand for the help, even though it isn't used.
     add_subcommand(subparsers, 'commit', 'Run a regular git commit, but also log your time.', commands.commit_main, [])
 
-    add_subcommand(subparsers, 'settings', 'Set up some default options.', commands.settings_main, [
+    add_subcommand(subparsers, 'set', 'Set up some default options.', commands.settings_main, [
         ({'-r', '--rate',}, {
             'nargs': '?',
             'default': argparse.SUPPRESS,
@@ -106,12 +108,17 @@ def cmd_handler():
         }),
     ])
 
-    args = parser.parse_args()
-    args.func(args)
+    if cmd:
+        args = parser.parse_args(cmd)
+    else:
+        args = parser.parse_args()
+        args.func(args)
 
 
 def main():
-    if sys.argv[1] == 'commit':
+    if len(sys.argv) == 1:
+        cmd_handler(['-h'])
+    elif sys.argv[1] == 'commit':
         # commits should not be handled by argparse because the command
         # string must remain intact
         if sys.argv[2] in ('-h', '--help'):

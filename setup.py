@@ -9,7 +9,7 @@ import gitime.database as db
 class install(_install):
     def run(self):
         _install.run(self)
-        os.system('gitime reset --force')
+        db.first_time_setup()
 
 setup(
     name="gitime",

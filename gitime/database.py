@@ -53,7 +53,7 @@ def first_time_setup():
                 timer_running   INTEGER  DEFAULT 0  NOT NULL,
                 timer_start     INTEGER  DEFAULT 0  NOT NULL,
                 timer_total     INTEGER  DEFAULT 0  NOT NULL,
-                active_invoice  INTEGER,
+                active_invoice  INTEGER  DEFAULT 0  NOT NULL,
                 FOREIGN KEY(active_invoice) REFERENCES invoice(rowid)
             );
             CREATE TABLE invoice(
@@ -65,7 +65,7 @@ def first_time_setup():
                 message         TEXT     DEFAULT '' NOT NULL,
                 date            INTEGER  DEFAULT 0  NOT NULL,
                 hours           REAL     DEFAULT 0  NOT NULL,
-                commit_invoice  INTEGER,
+                commit_invoice  INTEGER  DEFAULT 0  NOT NULL,
                 FOREIGN KEY(commit_invoice) REFERENCES invoice(rowid)
             );
             INSERT INTO user DEFAULT VALUES;
@@ -73,9 +73,10 @@ def first_time_setup():
         conn.commit()
 
     _db_connect(setup_action)
-    uname = os.getenv("SUDO_USER") or os.getenv("USER")
-    os.chown(DB_NAME, pwd.getpwnam(uname).pw_uid, pwd.getpwnam(uname).pw_gid)
-    os.chmod(DB_NAME, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
+    if os.name in ('posix', 'mac'):
+        uname = os.getenv("SUDO_USER") or os.getenv("USER")
+        os.chown(DB_NAME, pwd.getpwnam(uname).pw_uid, pwd.getpwnam(uname).pw_gid)
+        os.chmod(DB_NAME, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
 
 
 def _insert(statement):
@@ -152,7 +153,7 @@ def invoice_count():
 
 
 def query_all_invoices():
-    return _query(lambda c: c.execute("SELECT * FROM invoice"))
+    return _query(lambda c: c.execute("SELECT *, rowid FROM invoice"))
 
 
 def update(statement):

@@ -21,7 +21,7 @@ def settings_main(args):
         print(textwrap.dedent("""\
             These are your default values for all invoices created in the future:
             Hourly Rate: $%.2f
-            Round to: %g""" 
+            Round hours to the nearest %g""" 
         %(u.rate, u.rounding)))
 
 
@@ -47,11 +47,16 @@ def invoice_main(args):
                 inv.set_active()
                 print("Future commits will now be sent to the invoice %s." %inv.name)
     if args.list:
+        u = User()
         count = db.invoice_count()[0]
         noun = 'invoice' if count == 1 else 'invoices'
         print("You have %d %s:" %(count, noun))
         for invoice in db.query_all_invoices():
-            print(invoice[0])
+            if invoice[3] == u.active_invoice_rowid:
+                active = " (active)"
+            else:
+                active = ""
+            print(invoice[0], active)
 
 
 def status_main(args):
@@ -59,6 +64,10 @@ def status_main(args):
         inv = Invoice(args.invoice)
     else:
         u = User()
+        invid = u.active_invoice_rowid
+        if invid == 0:
+            print("You do not have any invoices yet! Create one with `gitime invoice -n 'your invoice name'`.")
+            sys.exit()
         inv = Invoice(u.active_invoice_rowid)
     print(textwrap.dedent("""\
         On invoice %s
@@ -71,7 +80,7 @@ def status_main(args):
         date = (datetime.fromtimestamp(com[1])).strftime('%m-%d-%Y')
         wspace1 = (17 - len(date)) * " "
         hours = "%g hours" %com[2]
-        wspace2 = (17 - len(hours)) * " "
+        wspace2 = (14 - len(hours)) * " "
         message = com[0]
         print(date, wspace1, hours, wspace2, message)
 
@@ -107,14 +116,15 @@ def commit_main(args):
     # commits are NOT handled by argparse. `args` are passed to this function
     # as they are from sys.argv.
     u = User()
-    inv = Invoice(u.active_invoice_rowid)
-    if u.active_invoice_rowid == 0:
+    invid = u.active_invoice_rowid
+    if invid == 0:
         print(textwrap.dedent("""\
             GITIME ERROR: You do not have an active invoice set. 
             You won't be able to record your hours without one.
             Create an invoice with the command: `gitime invoice -n <invoice name>` first.
             Your commit has NOT been made."""), file=sys.stderr)
         sys.exit()
+    inv = Invoice(invid)
     hours = round(parse_hours_flag(args) / u.rounding) * u.rounding
     if hours is False:
         hours = u.time_tracked()
