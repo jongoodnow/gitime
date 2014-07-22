@@ -69,12 +69,14 @@ def status_main(args):
             print("You do not have any invoices yet! Create one with `gitime invoice -n 'your invoice name'`.")
             sys.exit()
         inv = Invoice(u.active_invoice_rowid)
+    total_hours = inv.total_hours()
+    hourstr = 'hour' if total_hours == 1 else 'hours'
     print(textwrap.dedent("""\
         On invoice %s
-        Total Time Worked: %s hours
+        Total Time Worked: %g %s
         Total Charges:     $%.2f
         Charges:""" 
-    %(inv.name, inv.total_hours(), inv.total_earnings())))
+    %(inv.name, total_hours, hourstr, inv.total_earnings())))
     commits = inv.get_commit_meta()
     if not commits:
         print("No charges yet!")
@@ -82,7 +84,8 @@ def status_main(args):
         for com in commits:
             date = (datetime.fromtimestamp(com[1])).strftime('%m-%d-%Y')
             wspace1 = (17 - len(date)) * " "
-            hours = "%g hours" %com[2]
+            hourstr = 'hour' if com[2] == 1 else 'hours'
+            hours = "%g %s" %(com[2], hourstr)
             wspace2 = (14 - len(hours)) * " "
             message = com[0]
             print(date, wspace1, hours, wspace2, message)

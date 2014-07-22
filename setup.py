@@ -48,7 +48,7 @@ Look at your invoice::
     Total time worked: 3 hours
     Total charges:     $150.00
     Charges:
-    07-21-2014         1 hours         Added a really cool thing
+    07-21-2014         1 hour          Added a really cool thing
     07-22-2014         2 hours         Proved Riemann Hypothesis
 
 When it's time to bill, export your invoice to a spreadsheet. Currently, the only format available is csv. More formats are coming soon::
