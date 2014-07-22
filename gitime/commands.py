@@ -125,8 +125,10 @@ def commit_main(args):
             Your commit has NOT been made."""), file=sys.stderr)
         sys.exit()
     inv = Invoice(invid)
-    hours = round(parse_hours_flag(args) / u.rounding) * u.rounding
-    if hours is False:
+    raw_hours = parse_hours_flag(args)
+    if raw_hours is not False:
+        hours = round(raw_hours / inv.rounding) * inv.rounding
+    else:
         hours = u.time_tracked()
         if hours <= 0:
             print(textwrap.dedent("""\
