@@ -76,13 +76,16 @@ def status_main(args):
         Charges:""" 
     %(inv.name, inv.total_hours(), inv.total_earnings())))
     commits = inv.get_commit_meta()
-    for com in commits:
-        date = (datetime.fromtimestamp(com[1])).strftime('%m-%d-%Y')
-        wspace1 = (17 - len(date)) * " "
-        hours = "%g hours" %com[2]
-        wspace2 = (14 - len(hours)) * " "
-        message = com[0]
-        print(date, wspace1, hours, wspace2, message)
+    if not commits:
+        print("No charges yet!")
+    else:
+        for com in commits:
+            date = (datetime.fromtimestamp(com[1])).strftime('%m-%d-%Y')
+            wspace1 = (17 - len(date)) * " "
+            hours = "%g hours" %com[2]
+            wspace2 = (14 - len(hours)) * " "
+            message = com[0]
+            print(date, wspace1, hours, wspace2, message)
 
 
 def timer_main(args):
@@ -104,12 +107,13 @@ def timer_main(args):
     elif args.action == 'reset':
         u.reset_timer()
     elif args.action == 'status':
+        inv = Invoice(u.active_invoice_rowid)
         if u.timer_running:
             status = 'has been running since %s.' %str(datetime.fromtimestamp(u.timer_start))
         else:
             status = 'is not running.'
         print('The timer %s' %status)
-        print('Total hours tracked: %.2f' %(u.time_tracked()))
+        print('Total hours tracked: %.2f' %(u.time_tracked(inv)))
 
 
 def commit_main(args):
@@ -129,7 +133,7 @@ def commit_main(args):
     if raw_hours is not False:
         hours = round(raw_hours / inv.rounding) * inv.rounding
     else:
-        hours = u.time_tracked()
+        hours = u.time_tracked(inv)
         if hours <= 0:
             print(textwrap.dedent("""\
                 GITIME ERROR: You didn't specify a number of hours, and the timer hasn't recorded anything.
