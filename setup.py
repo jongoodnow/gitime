@@ -69,7 +69,7 @@ Install the latest release with::
 
 Or install the development version with::
 
-    $ git clone https://github.com/jongoodnow/gitime
+    $ git clone https://github.com/jongoodnow/gitime.git
     $ cd gitime
     $ python setup.py install
 
