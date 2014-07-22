@@ -54,7 +54,7 @@ You'll need two things installed to use gitime:
 
 Install the latest release with:
 
-	$ pip install gitime
+	$ pip install gitime --pre
 
 Or install the development version with:
 
