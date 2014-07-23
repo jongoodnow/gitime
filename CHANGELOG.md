@@ -1,3 +1,6 @@
+####dev
+* fixed broken link in pypi long description
+
 ####1.2a
 
 * Corrected clone link in readme

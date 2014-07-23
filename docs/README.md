@@ -6,7 +6,7 @@ Gitime lets you keep track of your billable hours along with your commits. Build
 Installation
 ----
 
-Gitime has full support on Linux, and experimental support for Windows and Mac.
+Gitime has full support on Linux and Windows, but is currently untested on Mac.
 
 You'll only need two things installed to use gitime:
 
