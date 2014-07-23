@@ -2,7 +2,6 @@ from __future__ import unicode_literals, print_function
 import sqlite3
 import sys
 import os
-import pwd
 import stat
 
 DB_PATH = os.path.expanduser('~/.gitime')
@@ -10,6 +9,7 @@ DB_PATH = os.path.expanduser('~/.gitime')
 if not os.path.exists(DB_PATH):
     os.makedirs(DB_PATH)
     if os.name in ('posix', 'mac'):
+        import pwd
         uname = os.getenv("SUDO_USER") or os.getenv("USER")
         os.chown(DB_PATH, pwd.getpwnam(uname).pw_uid, pwd.getpwnam(uname).pw_gid)
         os.chmod(DB_PATH, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
