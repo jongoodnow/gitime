@@ -74,6 +74,7 @@ def first_time_setup():
 
     _db_connect(setup_action)
     if os.name in ('posix', 'mac'):
+        import pwd
         uname = os.getenv("SUDO_USER") or os.getenv("USER")
         os.chown(DB_NAME, pwd.getpwnam(uname).pw_uid, pwd.getpwnam(uname).pw_gid)
         os.chmod(DB_NAME, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
