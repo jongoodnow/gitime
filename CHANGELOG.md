@@ -1,5 +1,6 @@
-####dev
+####1.3a
 * fixed broken link in pypi long description
+* fixed missing import for UNIX installs
 
 ####1.2a
 
