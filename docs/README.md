@@ -46,15 +46,15 @@ You can pause, reset, or check the timer by replacing `start` with `pause`, `res
 
 When you're ready, make your commit as you would normally, but change the `git` to `gitime` on the commit step.
 
-	git add .
-	gitime commit -m "Fixed a couple things"
-	git push
+	$ git add .
+	$ gitime commit -m "Fixed a couple things"
+	$ git push
 
 Your time will be logged automatically, and the commit will be made. When you're ready for the next task, run `gitime timer start` again and repeat the process.
 
 If you don't want to use the timer and would rather keep track of the time yourself, run your commit with the `--hours` flag.
 
-	gitime commit -m "Fixed a couple things" --hours 3
+	$ gitime commit -m "Fixed a couple things" --hours 3
 
 If you don't want to actually want to make a commit but want to log a task, run the commit with the `--fake` flag. Git will not be called.
 
