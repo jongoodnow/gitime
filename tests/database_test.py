@@ -12,6 +12,7 @@ class TestDatabase(unittest.TestCase):
         self.c = self.conn.cursor()
 
     def tearDown(self):
+        self.conn.close()
         os.remove('test.db')
 
     def test_new_database(self):

@@ -1,7 +1,7 @@
 from __future__ import unicode_literals, print_function
-from user import User
-from commit import Commit, parse_hours_flag, parse_commit_message
-from invoice import Invoice
+from gitime.user import User
+from gitime.commit import Commit, parse_hours_flag, parse_commit_message
+from gitime.invoice import Invoice
 import database as db
 import sys
 import textwrap

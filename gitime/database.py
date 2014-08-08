@@ -6,6 +6,7 @@ import stat
 
 DB_PATH = os.path.expanduser('~/.gitime')
 
+# set up the database folder if it doesn't exist
 if not os.path.exists(DB_PATH):
     os.makedirs(DB_PATH)
     if os.name in ('posix', 'mac'):
@@ -16,6 +17,12 @@ if not os.path.exists(DB_PATH):
 
 PATHCHAR = '\\' if sys.platform == 'win32' else '/'
 DB_NAME = PATHCHAR.join((DB_PATH, 'gitime.db'))
+
+# hack to get python 3 to not break when unicode is used
+try:
+    unicode
+except NameError:
+    unicode = str
 
 
 def _db_connect(action):
@@ -150,7 +157,7 @@ def query_invoice_commit_meta(rowid):
 
 
 def invoice_count():
-    return _query(lambda c: c.execute("SELECT COUNT(*) FROM invoice"), False)
+    return _query(lambda c: c.execute("SELECT COUNT(*) FROM invoice"), False)[0]
 
 
 def query_all_invoices():

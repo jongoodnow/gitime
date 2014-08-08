@@ -18,6 +18,7 @@ class TestInvoice(unittest.TestCase):
         self.inv = invoice.Invoice('some project', new=True, rate=20.0, rounding=1.0)
 
     def tearDown(self):
+        self.conn.close()
         os.remove('test.db')
 
     def test_create_commit(self):

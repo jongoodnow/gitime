@@ -3,9 +3,9 @@ import sys
 import re
 import math
 import time
-from user import User
-from invoice import Invoice
-import database as db
+from gitime.user import User
+from gitime.invoice import Invoice
+import gitime.database as db
 
 class Commit(object):
 

@@ -15,6 +15,7 @@ class TestInvoice(unittest.TestCase):
         self.user = user.User()
 
     def tearDown(self):
+        self.conn.close()
         os.remove('test.db')
 
     def test_create_invoice(self):

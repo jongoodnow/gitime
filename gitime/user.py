@@ -2,7 +2,7 @@ from __future__ import unicode_literals, print_function, division
 import sys
 import time
 import math
-import database as db
+import gitime.database as db
 
 unix_now = lambda: math.floor(time.time())
 

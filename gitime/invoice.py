@@ -1,8 +1,8 @@
 from __future__ import unicode_literals, print_function
 import sys
 import textwrap
-from user import User
-import database as db
+from gitime.user import User
+import gitime.database as db
 
 class Invoice(object):
 
