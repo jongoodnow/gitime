@@ -2,6 +2,8 @@ clean:
 	rm -rf build
 	rm -rf dist
 	rm -rf gitime.egg-info
+	rm -rf docs/_build/doctrees
+	rm -rf docs/_build/html
 
 reinstall:
 	pip uninstall -y gitime
