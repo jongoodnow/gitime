@@ -31,15 +31,14 @@ class Invoice(object):
             # if `unique` is a rowid, an exception is raised
             # on the query.
             if not new:
-                if raw_input("That invoice doesn't exist. Make a new one? [Y/n] ") == 'n':
-                    sys.exit()
+                raise InvoiceNotFound
             self.name = unique
             if rate is None and self.user.rate == 0:
-                print(textwrap.dedent("""\
-                    WARNING: Your default hourly rate is set to zero. 
-                    This means that no earnings will be recorded. 
-                    You can set your default rate with `gitime set -r <rate>` or 
-                    set the rate for this invoice with `gitime invoice <invoice name> -r <rate>`."""))
+                print(textwrap.fill((
+                    "WARNING: Your default hourly rate is set to zero. "
+                    "This means that no earnings will be recorded. "
+                    "You can set your default rate with `gitime set -r <rate>` or "
+                    "set the rate for this invoice with `gitime invoice <invoice name> -r <rate>`."), 80))
             self.rate = rate if rate is not None else self.user.rate
             self.rounding = rounding if rounding is not None else self.user.rounding
             self.rowid = db.insert_invoice(self.name, self.rate, self.rounding)
@@ -68,3 +67,7 @@ class Invoice(object):
 
     def total_earnings(self):
         return self.total_hours() * self.rate
+
+
+class InvoiceNotFound(Exception):
+    pass

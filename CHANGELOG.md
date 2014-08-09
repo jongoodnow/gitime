@@ -2,6 +2,8 @@
 
 * Support for Python 3.4
 * Reinstalling the app no longer resets the database if it already exists
+* Proper text overflow in console output
+* `gitime export` will no longer ask you to create an invoice if you don't have any
 
 ####1.3a
 
@@ -12,7 +14,7 @@
 
 * Corrected clone link in readme
 * `gitime status` now says "hour" instead of "hours" when one hour is billed
-* Windows is now supported
+* Windows and Mac now supported
 
 ####1.1a
 

@@ -50,7 +50,7 @@ Installation
 You'll need two things installed to use gitime:
 
 * [Git](http://git-scm.com/downloads), and an executable called `git` on your path
-* [Python 2.7](https://www.python.org/downloads/)
+* [Python 2.7](https://www.python.org/downloads/) (or Python 3.4)
 
 Install the latest alpha release with:
 

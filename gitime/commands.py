@@ -1,7 +1,7 @@
 from __future__ import unicode_literals, print_function
 from gitime.user import User
 from gitime.commit import Commit, parse_hours_flag, parse_commit_message
-from gitime.invoice import Invoice
+from gitime.invoice import Invoice, InvoiceNotFound
 import gitime.database as db
 import sys
 import textwrap
@@ -37,7 +37,12 @@ def invoice_main(args):
             inv.set_active()
             print("Future commits will now be sent to the invoice %s." %inv.name)
         else:
-            inv = Invoice(args.name)
+            try:
+                inv = Invoice(args.name)
+            except InvoiceNotFound:
+                if raw_input("That invoice doesn't exist. Make a new one? [Y/n] ") == 'n':
+                    sys.exit()
+                inv = Invoice(args.name, new=True)
             if hasattr(args, 'rate'):
                 inv.set_rate(args.rate)
             if hasattr(args, 'round'):
@@ -48,7 +53,7 @@ def invoice_main(args):
                 print("Future commits will now be sent to the invoice %s." %inv.name)
     if args.list:
         u = User()
-        count = db.invoice_count()[0]
+        count = db.invoice_count()
         noun = 'invoice' if count == 1 else 'invoices'
         print("You have %d %s:" %(count, noun))
         for invoice in db.query_all_invoices():
@@ -95,11 +100,12 @@ def timer_main(args):
     u = User()
     if not args.force:
         if u.active_invoice_rowid == 0:
-            print(textwrap.dedent("""\
-                WARNING: You do not have an active invoice set. 
-                You won't be able to record your hours without one.
-                Create an invoice with the command: `gitime invoice -n <invoice name>` first,
-                or suppress this warning by running the timer with the --force flag."""), file=sys.stderr)
+            print(textwrap.fill((
+                "WARNING: You do not have an active invoice set. "
+                "You won't be able to record your hours without one. "
+                "Create an invoice with the command: `gitime invoice -n <invoice name>` first, "
+                "or suppress this warning by running the timer with the --force flag."), 
+            80), file=sys.stderr)
             sys.exit()
     if args.action == 'start':
         u.start_timer()
@@ -125,11 +131,11 @@ def commit_main(args):
     u = User()
     invid = u.active_invoice_rowid
     if invid == 0:
-        print(textwrap.dedent("""\
-            GITIME ERROR: You do not have an active invoice set. 
-            You won't be able to record your hours without one.
-            Create an invoice with the command: `gitime invoice -n <invoice name>` first.
-            Your commit has NOT been made."""), file=sys.stderr)
+        print(textwrap.fill((
+            "GITIME ERROR: You do not have an active invoice set. "
+            "You won't be able to record your hours without one. "
+            "Create an invoice with the command: `gitime invoice -n <invoice name>` first."
+            "Your commit has NOT been made."), 80), file=sys.stderr)
         sys.exit()
     inv = Invoice(invid)
     raw_hours = parse_hours_flag(args)
@@ -138,10 +144,10 @@ def commit_main(args):
     else:
         hours = u.time_tracked(inv)
         if hours <= 0:
-            print(textwrap.dedent("""\
-                GITIME ERROR: You didn't specify a number of hours, and the timer hasn't recorded anything.
-                Run this command with the `--hours <hour count>` flag, or use the timer to track your time.
-                Your commit has NOT been made."""), file=sys.stderr)
+            print(textwrap.fill((
+                "GITIME ERROR: You didn't specify a number of hours, and the timer hasn't recorded anything."
+                "Run this command with the `--hours <hour count>` flag, or use the timer to track your time."
+                "Your commit has NOT been made."), 80), file=sys.stderr)
             sys.exit()
         u.reset_timer()
     message = parse_commit_message(args)
@@ -160,12 +166,17 @@ def commit_main(args):
 
 def export_invoice_main(args):
     if hasattr(args, 'invoice'):
-        inv = Invoice(args.invoice)
+        try:
+            inv = Invoice(args.invoice)
+        except InvoiceNotFound:
+            print("That invoice does not exist.", file=sys.stderr)
+            sys.exit()
     else:
         u = User()
         if u.active_invoice_rowid == 0:
             print("You do not have an active invoice set. Create one with `gitime invoice -n <invoice name> first.",
                 file=sys.stderr)
+            sys.exit()
         inv = Invoice(u.active_invoice_rowid)
     if hasattr(args, 'file'):
         filename = args.file
@@ -173,7 +184,8 @@ def export_invoice_main(args):
         filename = inv.name
         commits = inv.get_commit_meta()
     if args.format == 'csv':
-        filename += '.csv'
+        if filename[-4:] != '.csv': 
+            filename += '.csv'
         with open(filename, 'wb') as fi:
             writer = csv.writer(fi)
             writer.writerow(['Date', 'Hours', 'Task'])
@@ -189,6 +201,9 @@ def export_invoice_main(args):
 
 def reset_main(args):
     if not args.force:
-        if raw_input("WARNING: This will delete all invoices, commit logs, and user preferences. Your git repos won't be affected. You should export your invoices first. Are you sure? [y/N] ") not in ('y', 'Y'):
+        if raw_input(textwrap.fill((
+            "WARNING: This will delete all invoices, commit logs, and user "
+            "preferences. Your git repos won't be affected. You should export "
+            "your invoices first. Are you sure? [y/N] "), 80)) not in ('y', 'Y'):
             sys.exit()
     db.first_time_setup()
