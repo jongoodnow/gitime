@@ -1,15 +1,19 @@
 Status
-====
+======
 
 See what commits are in your current invoice.
 
 Usage
-----
+-----
+
+::
 
 	gitime status [-h] [-i [INVOICE]]
 
 Example
-----
+-------
+
+::
 
 	$ gitime status
 	Total Time Worked: 7.0 hours
@@ -20,12 +24,14 @@ Example
 	07-22-2014         4 hours         Proved P!=NP
 
 Options
-----
+-------
 
-####--invoice [INVOICE], -i [INVOICE]
+--invoice [INVOICE], -i [INVOICE]
+*********************************
 
 Choose an invoice by name, instead of using the active one.
 
-####--help, -h
+--help, -h
+**********
 
 Display a help message.

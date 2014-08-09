@@ -4,6 +4,7 @@
 * Reinstalling the app no longer resets the database if it already exists
 * Proper text overflow in console output
 * `gitime export` will no longer ask you to create an invoice if you don't have any
+* Documentation hosted on readthedocs.org
 
 ####1.3a
 
