@@ -91,6 +91,8 @@ def parse_commit_message(args):
         sys.exit()
     else:
         ret = args[index + 1]
+        # escape unescaped quotes so that we can add quotes around the message
+        args[index + 1] = re.sub(r'(?<!\\)(?:\\\\)*"', '\\"', args[index + 1])
         # add quotes to the message so that git can understand it when the command is run
         args[index + 1] = "".join(['"', args[index + 1], '"'])
         return ret

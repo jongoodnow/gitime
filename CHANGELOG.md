@@ -5,6 +5,7 @@
 * Proper text overflow in console output
 * `gitime export` will no longer ask you to create an invoice if you don't have any
 * Documentation hosted on readthedocs.org
+* `gitime commit` handles quotation marks in commit messages properly
 
 ####1.3a
 

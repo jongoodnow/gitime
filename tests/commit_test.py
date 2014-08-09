@@ -53,3 +53,6 @@ class TestInvoice(unittest.TestCase):
             'did a thing')
         self.assertEqual(commit.parse_commit_message(['git', 'commit', '-a', "--message='didn\\\'t do a thing'"]),
             'didn\\\'t do a thing')
+        args = ['git', 'commit', '-m', 'did "a t\\"hing']
+        commit.parse_commit_message(args)
+        self.assertEqual(args, ['git', 'commit', '-m', '"did \\"a t\\"hing"'])

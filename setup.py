@@ -10,7 +10,7 @@ import gitime.database as db
 long_description="""
 Keep track of your billable hours along with your commits. Gitime lets you build an invoice with your tasks and hours worked from your commit messages.
 
-`Read the docs <https://github.com/jongoodnow/gitime/tree/master/docs>`_ for more details
+`Read the docs <http://gitime.readthedocs.org/en/latest/>`_ for more details
 
 Simple Usage
 ------------
