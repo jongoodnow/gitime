@@ -61,8 +61,3 @@ Or install the development version with:
 	$ git clone https://github.com/jongoodnow/gitime.git
 	$ cd gitime
 	$ python setup.py install
-
-License
-----
-
-[The MIT License](https://github.com/jongoodnow/gitime/blob/master/LICENSE)

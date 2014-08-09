@@ -4,25 +4,32 @@ import sys
 import os
 import stat
 
-DB_PATH = os.path.expanduser('~/.gitime')
-
-# set up the database folder if it doesn't exist
-if not os.path.exists(DB_PATH):
-    os.makedirs(DB_PATH)
-    if os.name in ('posix', 'mac'):
-        import pwd
-        uname = os.getenv("SUDO_USER") or os.getenv("USER")
-        os.chown(DB_PATH, pwd.getpwnam(uname).pw_uid, pwd.getpwnam(uname).pw_gid)
-        os.chmod(DB_PATH, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
-
-PATHCHAR = '\\' if sys.platform == 'win32' else '/'
-DB_NAME = PATHCHAR.join((DB_PATH, 'gitime.db'))
-
 # hack to get python 3 to not break when unicode is used
 try:
     unicode
 except NameError:
     unicode = str
+
+# set up the database folder if it doesn't exist
+DB_DIR = os.path.expanduser('~/.gitime')
+if not os.path.exists(DB_DIR):
+    os.makedirs(DB_DIR)
+    if os.name in ('posix', 'mac'):
+        set_unix_permissions(DB_DIR)
+
+PATHCHAR = '\\' if os.name == 'nt' else '/'
+DB_NAME = PATHCHAR.join((DB_DIR, 'gitime.db'))
+
+
+def set_unix_permissions(path):
+    import pwd
+    uname = os.getenv("SUDO_USER") or os.getenv("USER")
+    os.chown(DB_DIR, pwd.getpwnam(uname).pw_uid, pwd.getpwnam(uname).pw_gid)
+    os.chmod(DB_DIR, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
+
+
+def db_exists():
+    return os.path.isfile(DB_NAME)
 
 
 def _db_connect(action):
@@ -81,10 +88,7 @@ def first_time_setup():
 
     _db_connect(setup_action)
     if os.name in ('posix', 'mac'):
-        import pwd
-        uname = os.getenv("SUDO_USER") or os.getenv("USER")
-        os.chown(DB_NAME, pwd.getpwnam(uname).pw_uid, pwd.getpwnam(uname).pw_gid)
-        os.chmod(DB_NAME, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
+        set_unix_permissions(DB_NAME)
 
 
 def _insert(statement):

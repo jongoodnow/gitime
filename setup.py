@@ -3,15 +3,11 @@
 import os
 import sys
 import codecs
-from setuptools import setup, find_packages
+from setuptools import setup
 from setuptools.command.install import install as _install
 import gitime.database as db
 
 long_description="""
-======
-gitime
-======
-
 Keep track of your billable hours along with your commits. Gitime lets you build an invoice with your tasks and hours worked from your commit messages.
 
 `Read the docs <https://github.com/jongoodnow/gitime/tree/master/docs>`_ for more details
@@ -72,17 +68,13 @@ Or install the development version with::
     $ git clone https://github.com/jongoodnow/gitime.git
     $ cd gitime
     $ python setup.py install
-
-License
--------
-
-`The MIT License <https://github.com/jongoodnow/gitime/blob/master/LICENSE>`_
 """
 
 class install(_install):
     def run(self):
         _install.run(self)
-        db.first_time_setup()
+        if not db.db_exists():
+            db.first_time_setup()
 
 setup(
     name="gitime",

@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 import argparse
 import sys
 import gitime
-import commands
+import gitime.commands as commands
 
 
 def add_subcommand(subparsers, name, help, func, args):

@@ -1,4 +1,10 @@
+####dev
+
+* Support for Python 3.4
+* Reinstalling the app no longer resets the database if it already exists
+
 ####1.3a
+
 * fixed broken link in pypi long description
 * fixed missing import for UNIX installs
 

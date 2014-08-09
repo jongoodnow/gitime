@@ -1,6 +1,0 @@
-#!/bin/sh
-
-echo `python --version`
-python -Wall -3 -m unittest discover tests/ '*test.py' --failfast
-echo `python3 --version`
-python3 -Wall -m unittest discover tests/ '*test.py' --failfast
