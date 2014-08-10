@@ -15,7 +15,7 @@ Usage
 Details
 -------
 
-Your commit must contain a message in the form `-m [MSG]` or `--message=[MSG]`
+Your commit must contain a message in the form :code:`-m [MSG]` or :code:`--message=[MSG]`
 
 Options
 -------

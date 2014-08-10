@@ -31,7 +31,7 @@ Choose how to round hours worked. This defaults to the nearest quarter hour. For
 --list, -l
 **********
 
-Display what the `--rate` and `--round` settings are currently set to.
+Display what the :code:`--rate` and :code:`--round` settings are currently set to.
 
 --help, -h
 **********

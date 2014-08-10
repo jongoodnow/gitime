@@ -15,7 +15,7 @@ Usage
 Details
 -------
 
-The timer is reset automatically when you make a commit. You will need to start the timer again after making a commit. Using the timer is optional. You can also use the `--hours` option when committing to specify the hours yourself.
+The timer is reset automatically when you make a commit. You will need to start the timer again after making a commit. Using the timer is optional. You can also use the :code:`--hours` option when committing to specify the hours yourself.
 
 Subcommands
 -----------
@@ -28,7 +28,7 @@ Starts or restarts the timer, resuming from pause of necessary.
 pause
 *****
 
-Stops the timer, allowing you to restart with `start`.
+Stops the timer, allowing you to restart with :code:`start`.
 
 reset
 *****

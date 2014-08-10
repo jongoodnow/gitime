@@ -16,12 +16,12 @@ Options
 --invoice [INVOICE], -i [INVOICE]
 *********************************
 
-The name of the invoice to export. Defaults to your active invoice. See what invoice is active with `gitime status`.
+The name of the invoice to export. Defaults to your active invoice. See what invoice is active with :code:`gitime status`.
 
 --format [FORMAT], -f [FORMAT]
 ******************************
 
-Choose the export file format. This defaults to `csv`. 
+Choose the export file format. This defaults to :code:`csv`. 
 
 The formats currently available are:
 

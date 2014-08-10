@@ -27,13 +27,13 @@ Time how long you've been working::
 
     $ gitime timer start
 
-Make a commit as you would normally, but on the commit step, use `gitime` instead of `git`::
+Make a commit as you would normally, but on the commit step, use :code:`gitime` instead of :code:`git`::
 
     $ git add feature.c
     $ gitime commit -m "Added a really cool thing"
     $ git push
 
-Or, if you don't like timers, record the time yourself with the `--hours` flag::
+Or, if you don't like timers, record the time yourself with the :code:`--hours` flag::
 
     $ gitime commit -m "Proved Riemann Hypothesis" --hours 2
 
@@ -56,7 +56,7 @@ Installation
 
 You'll need two things installed to use gitime:
 
-- `Git <http://git-scm.com/downloads>`_, and an executable called `git` on your path
+- `Git <http://git-scm.com/downloads>`_, and an executable called :code:`git` on your path
 - `Python 2.7 <https://www.python.org/downloads/>`_ (or Python 3.4)
 
 Install the latest release with::

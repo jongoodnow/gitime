@@ -7,6 +7,7 @@
 * Documentation hosted on readthedocs.org
 * `gitime commit` handles quotation marks in commit messages properly
 * Support for Microsoft Excel (xlsx) exports
+* Fixed RST inline code in docs
 
 ####1.3a
 

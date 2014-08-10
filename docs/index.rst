@@ -10,7 +10,7 @@ Gitime has full support on Linux and Windows, but is currently untested on Mac.
 
 You'll only need two things installed to use gitime:
 
-- `Git <http://git-scm.com/downloads>`_, and an executable called `git` on your path
+- `Git <http://git-scm.com/downloads>`_, and an executable called :code:`git` on your path
 - `Python 2.7 <https://www.python.org/downloads/>`_ (or Python 3.4)
 
 Install the latest gitime release with::
@@ -34,7 +34,7 @@ By default, gitime will round your hours worked to the nearest quarter hour. Thi
 
     $ gitime set --round 0.5
 
-Now, create your first invoice, named after whatever project you're working on. `-r` and `--round` are available here too, if you want a custom rate for this project::
+Now, create your first invoice, named after whatever project you're working on. :code:`-r` and :code:`--round` are available here too, if you want a custom rate for this project::
 
     $ gitime invoice -n "Awesome Secret Project"
 
@@ -42,21 +42,21 @@ When you're ready to work, start the timer::
 
     $ gitime timer start
 
-You can pause, reset, or check the timer by replacing `start` with `pause`, `reset`, and `status` respectively.
+You can pause, reset, or check the timer by replacing :code:`start` with :code:`pause`, :code:`reset`, and :code:`status` respectively.
 
-When you're ready, make your commit as you would normally, but change the `git` to `gitime` on the commit step::
+When you're ready, make your commit as you would normally, but change the :code:`git` to :code:`gitime` on the commit step::
 
     $ git add .
     $ gitime commit -m "Fixed a couple things"
     $ git push
 
-Your time will be logged automatically, and the commit will be made. When you're ready for the next task, run `gitime timer start` again and repeat the process.
+Your time will be logged automatically, and the commit will be made. When you're ready for the next task, run :code:`gitime timer start` again and repeat the process.
 
-If you don't want to use the timer and would rather keep track of the time yourself, run your commit with the `--hours` flag::
+If you don't want to use the timer and would rather keep track of the time yourself, run your commit with the :code:`--hours` flag::
 
     $ gitime commit -m "Fixed a couple things" --hours 3
 
-If you don't want to actually want to make a commit but want to log a task, run the commit with the `--fake` flag. Git will not be called.
+If you don't want to actually want to make a commit but want to log a task, run the commit with the :code:`--fake` flag. Git will not be called.
 
 You can check on your progress with::
 
