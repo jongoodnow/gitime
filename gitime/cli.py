@@ -92,7 +92,7 @@ def cmd_handler(cmd=None):
         ({'-f', '--format',}, {
             'nargs': '?',
             'default': 'csv',
-            'help': 'Choose the export format. Defaults to csv.',
+            'help': 'Choose the export format. At this time, it can either be csv or xlsx. Defaults to csv.',
         }),
         ({'-p', '--file',}, {
             'nargs': '?',

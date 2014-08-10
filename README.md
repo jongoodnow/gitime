@@ -40,9 +40,9 @@ Look at your invoice.
 	07-21-2014         1 hour          Added a really cool thing
 	07-22-2014         2 hours         Proved Riemann Hypothesis
 
-When it's time to bill, export your invoice to a spreadsheet. Currently, the only format available is csv. More formats are coming soon.
+When it's time to bill, export your invoice to a spreadsheet. Currently, csv and xlsx formats are supported.
 
-	$ gitime export
+	$ gitime export -f xlsx
 
 Installation
 ----

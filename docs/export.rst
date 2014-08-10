@@ -21,7 +21,12 @@ The name of the invoice to export. Defaults to your active invoice. See what inv
 --format [FORMAT], -f [FORMAT]
 ******************************
 
-Choose the format to export to. This defaults to `csv`. Right now, this is the only format available. More will come soon.
+Choose the export file format. This defaults to `csv`. 
+
+The formats currently available are:
+
+- csv
+- xlsx
 
 --file [FILE], -p [FILE]
 ************************

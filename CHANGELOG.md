@@ -6,6 +6,7 @@
 * `gitime export` will no longer ask you to create an invoice if you don't have any
 * Documentation hosted on readthedocs.org
 * `gitime commit` handles quotation marks in commit messages properly
+* Support for Microsoft Excel (xlsx) exports
 
 ####1.3a
 

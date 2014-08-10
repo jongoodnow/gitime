@@ -58,10 +58,16 @@ If you don't want to use the timer and would rather keep track of the time yours
 
 If you don't want to actually want to make a commit but want to log a task, run the commit with the `--fake` flag. Git will not be called.
 
-You can check on your progress with `gitime status`, or export your invoice to csv with `gitime export`. More formats will be available soon.
+You can check on your progress with::
 
-Further Info
-------------
+    $ gitime status
+
+Or export your invoice to csv or xlsx with::
+
+    $ gitime export -f xlsx
+
+Command Details
+---------------
 
 .. toctree::
     :maxdepth: 1

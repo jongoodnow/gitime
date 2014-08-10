@@ -7,6 +7,7 @@ import sys
 import textwrap
 import os
 import csv
+import xlsxwriter
 from datetime import datetime
 
 def settings_main(args):
@@ -194,6 +195,29 @@ def export_invoice_main(args):
             writer.writerow([])
             writer.writerow(['Total Time Worked:', "%s" %inv.total_hours()])
             writer.writerow(['Total Charges:', "$%.2f" %inv.total_earnings()])
+    elif args.format == 'xlsx':
+        if filename[-4:] != '.xlsx': 
+            filename += '.xlsx'
+        workbook = xlsxwriter.Workbook(filename)
+        worksheet = workbook.add_worksheet()
+        worksheet.set_column('A:A', 18)
+        worksheet.set_column('C:C', 80)
+        worksheet.write_string(0, 0, 'Date')
+        worksheet.write_string(0, 1, 'Hours')
+        worksheet.write_string(0, 2, 'Task')
+        row = 1
+        for com in commits:
+            worksheet.write_string(row, 0, (datetime.fromtimestamp(com[1])).strftime('%m-%d-%Y'))
+            worksheet.write_number(row, 1, com[2])
+            worksheet.write_string(row, 2, com[0])
+            row += 1
+        row += 1
+        worksheet.write_string(row, 0, 'Total Time Worked:')
+        worksheet.write_number(row, 1, inv.total_hours())
+        row += 1
+        worksheet.write_string(row, 0, 'Total Charges:')
+        worksheet.write_string(row, 1, '$%.2f' %inv.total_earnings())
+        workbook.close()
     else:
         print("The format you specified is not supported at this time.",
             file=sys.stderr)

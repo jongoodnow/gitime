@@ -104,5 +104,6 @@ setup(
     cmdclass={
         'install': install
     },
-    test_suite='tests'
+    test_suite='tests',
+    install_requires=['xlsxwriter']
 )
