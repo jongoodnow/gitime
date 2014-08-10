@@ -7,7 +7,7 @@ import unittest
 import sqlite3
 import os
 
-class TestInvoice(unittest.TestCase):
+class TestCommit(unittest.TestCase):
 
     def setUp(self):
         db.DB_NAME = 'test.db'
