@@ -22,6 +22,10 @@ DB_NAME = PATHCHAR.join((DB_DIR, 'gitime.db'))
 
 
 def set_unix_permissions(path):
+    """ Linux and Mac users will probably install using sudo,
+        so the user needs to be granted read and write access
+        to the database
+    """
     import pwd
     uname = os.getenv("SUDO_USER") or os.getenv("USER")
     os.chown(DB_DIR, pwd.getpwnam(uname).pw_uid, pwd.getpwnam(uname).pw_gid)
