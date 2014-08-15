@@ -87,7 +87,7 @@ setup(
     keywords=['git', 'invoice', 'timer'],
     license="MIT",
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Natural Language :: English',
