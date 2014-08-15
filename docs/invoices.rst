@@ -10,7 +10,7 @@ Usage
 
 ::
 
-	gitime invoice [-h] [-n] [-r [RATE]] [-o [ROUNDING]] [--list] [name]
+	gitime invoice [-h] [-n] [-r [RATE]] [-o [ROUNDING]] [-l] [name]
 
 Details
 -------

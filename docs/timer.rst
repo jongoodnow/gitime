@@ -10,7 +10,7 @@ Usage
 
 ::
 
-	gitime timer [-h] [--force] {start,pause,reset,status}
+	gitime timer [-h] [-f] {start,pause,reset,status}
 
 Details
 -------

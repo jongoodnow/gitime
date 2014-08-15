@@ -8,7 +8,7 @@ Usage
 
 ::
 
-	gitime set [-h] [-r [RATE]] [-o [ROUNDING]] [--list]
+	gitime set [-h] [-r [RATE]] [-o [ROUNDING]] [-l]
 
 Details
 -------

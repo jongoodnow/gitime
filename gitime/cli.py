@@ -22,50 +22,50 @@ def cmd_handler(cmd=None):
     add_subcommand(subparsers, 'commit', 'Run a regular git commit, but also log your time.', commands.commit_main, [])
 
     add_subcommand(subparsers, 'set', 'Set up some default options.', commands.settings_main, [
-        ({'-r', '--rate',}, {
+        (['-r', '--rate',], {
             'nargs': '?',
             'default': argparse.SUPPRESS,
             'help': 'Set the hourly rate that is used by default on all your invoices.',
         }),
-        ({'-o', '--round', '--rounding',}, {
+        (['-o', '--round', '--rounding',], {
             'nargs': '?',
             'default': argparse.SUPPRESS,
             'help': 'Choose how to round the number of hours worked. Defaults to the nearest hour.',
         }),
-        ({'-l', '--list',}, {
+        (['-l', '--list',], {
             'help': 'List the currently set rate and rounding',
             'action': 'store_true',
         }),
     ])
 
     add_subcommand(subparsers, 'invoice', 'Switch to a different invoice, start a new one, or change stats.', commands.invoice_main, [
-        ({'name',}, {
+        (['name',], {
             'help': 'The name of the invoice.',
             'nargs': '?',
             'default': argparse.SUPPRESS,
         }),
-        ({'-n', '--new',}, {
+        (['-n', '--new',], {
             'help': 'Create a new invoice. Without this flag, switch to an invoice that already exists.',
             'action': 'store_true',
         }),
-        ({'-r', '--rate',}, {
+        (['-r', '--rate',], {
             'nargs': '?',
             'default': argparse.SUPPRESS,
             'help': 'Set the hourly rate. Defaults to the rate in your settings.',
         }),
-        ({'-o', '--round', '--rounding',}, {
+        (['-o', '--round', '--rounding',], {
             'nargs': '?',
             'default': argparse.SUPPRESS,
             'help': 'Choose how to round the number of hours worked. Defaults to the nearest hour.',
         }),
-        ({'-l', '--list',}, {
+        (['-l', '--list',], {
             'help': 'List all invoices.',
             'action': 'store_true',
         }),
     ])
 
     add_subcommand(subparsers, 'status', "See what's in your current invoice", commands.status_main, [
-        ({'-i','--invoice'}, {
+        (['-i','--invoice'], {
             'nargs': '?',
             'default': argparse.SUPPRESS,
             'help': 'Choose a different invoice to view the status of.',
@@ -73,28 +73,28 @@ def cmd_handler(cmd=None):
     ])
 
     add_subcommand(subparsers, 'timer', 'Control your commit timer.', commands.timer_main, [
-        ({'action',}, {
+        (['action',], {
             'choices': ['start', 'pause', 'reset', 'status',],
             'help': 'Start the timer, pause it, or reset it. The timer is reset automatically when you make a commit.',
         }),
-        ({'-f', '--force',}, {
+        (['-f', '--force',], {
             'help': 'Suppress warnings.',
             'action': 'store_true',
         }),
     ])
 
     add_subcommand(subparsers, 'export', 'Export an invoice.', commands.export_invoice_main, [
-        ({'-i','--invoice'}, {
+        (['-i','--invoice'], {
             'nargs': '?',
             'default': argparse.SUPPRESS,
             'help': 'The name of the invoice to export. Defaults to the active invoice',
         }),
-        ({'-f', '--format',}, {
+        (['-f', '--format',], {
             'nargs': '?',
             'default': 'csv',
             'help': 'Choose the export format. At this time, it can either be csv or xlsx. Defaults to csv.',
         }),
-        ({'-p', '--file',}, {
+        (['-p', '--file',], {
             'nargs': '?',
             'default': argparse.SUPPRESS,
             'help': 'The name of the file to write. Defaults to the name of the invoice with an appropriate extension.',
@@ -102,7 +102,7 @@ def cmd_handler(cmd=None):
     ])
 
     add_subcommand(subparsers, 'reset', 'Deletes all invoices, commit records, and user preferences.', commands.reset_main, [
-        ({'-f','--force'}, {
+        (['-f','--force'], {
             'help': 'No confirmation message is sent before reset.',
             'action': 'store_true',
         }),

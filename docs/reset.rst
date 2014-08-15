@@ -8,7 +8,7 @@ Usage
 
 ::
 
-	gitime reset [-h] [--force]
+	gitime reset [-h] [-f]
 
 Details
 -------
