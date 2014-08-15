@@ -8,6 +8,8 @@
 * `gitime commit` handles quotation marks in commit messages properly
 * Support for Microsoft Excel (xlsx) exports
 * Fixed RST inline code in docs
+* `gitime invoice` now assumes the active invoice if no name is specified
+* The `--round` flag can now be activated with `--rounding` or `-o`
 
 ####1.3a
 

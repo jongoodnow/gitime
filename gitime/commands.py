@@ -27,6 +27,7 @@ def settings_main(args):
 
 
 def invoice_main(args):
+    u = User()
     if hasattr(args, 'name'):
         if args.new:
             kwargs = {'new': True}
@@ -48,12 +49,19 @@ def invoice_main(args):
                 inv.set_rate(args.rate)
             if hasattr(args, 'round'):
                 inv.set_rounding(args.round)
-            u = User()
             if u.active_invoice_rowid != inv.rowid:
                 inv.set_active()
                 print("Future commits will now be sent to the invoice %s." %inv.name)
+    else:
+        if db.invoice_count() == 0:
+            print("You do not have any invoices yet! Create one with `gitime invoice -n <invoice name>`.")
+        else:
+            inv = Invoice(u.active_invoice_rowid)
+            if hasattr(args, 'rate'):
+                inv.set_rate(args.rate)
+            if hasattr(args, 'round'):
+                inv.set_rounding(args.round)
     if args.list:
-        u = User()
         count = db.invoice_count()
         noun = 'invoice' if count == 1 else 'invoices'
         print("You have %d %s:" %(count, noun))
@@ -72,7 +80,7 @@ def status_main(args):
         u = User()
         invid = u.active_invoice_rowid
         if invid == 0:
-            print("You do not have any invoices yet! Create one with `gitime invoice -n 'your invoice name'`.")
+            print("You do not have any invoices yet! Create one with `gitime invoice -n <invoice name>`.")
             sys.exit()
         inv = Invoice(u.active_invoice_rowid)
     total_hours = inv.total_hours()
@@ -219,7 +227,7 @@ def export_invoice_main(args):
         worksheet.write_string(row, 1, '$%.2f' %inv.total_earnings())
         workbook.close()
     else:
-        print("The format you specified is not supported at this time.",
+        print("The format you specified is not supported at this time. Current allowed formats are: `csv`, `xlsx`.",
             file=sys.stderr)
 
 

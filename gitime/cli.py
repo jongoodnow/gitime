@@ -27,7 +27,7 @@ def cmd_handler(cmd=None):
             'default': argparse.SUPPRESS,
             'help': 'Set the hourly rate that is used by default on all your invoices.',
         }),
-        ({'--round',}, {
+        ({'-o', '--round', '--rounding',}, {
             'nargs': '?',
             'default': argparse.SUPPRESS,
             'help': 'Choose how to round the number of hours worked. Defaults to the nearest hour.',
@@ -53,7 +53,7 @@ def cmd_handler(cmd=None):
             'default': argparse.SUPPRESS,
             'help': 'Set the hourly rate. Defaults to the rate in your settings.',
         }),
-        ({'--round',}, {
+        ({'-o', '--round', '--rounding',}, {
             'nargs': '?',
             'default': argparse.SUPPRESS,
             'help': 'Choose how to round the number of hours worked. Defaults to the nearest hour.',

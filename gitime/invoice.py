@@ -47,12 +47,22 @@ class Invoice(object):
         self.user.set_active_invoice(self.rowid)
 
     def set_rate(self, r):
+        try:
+            r = float(r)
+        except ValueError:
+            print('Rates must be provided in the form of a number.', file=sys.stderr)
+            sys.exit()
         self.rate = r
         db.update(lambda c: c.execute("""
             UPDATE invoice SET rate=? WHERE rowid=?
         """, (self.rate, self.rowid)))
 
     def set_rounding(self, r):
+        try:
+            r = float(r)
+        except ValueError:
+            print('Rounding numbers must be provided in the form of a number.', file=sys.stderr)
+            sys.exit()
         self.rounding = r
         db.update(lambda c: c.execute("""
             UPDATE invoice SET rounding=? WHERE rowid=?

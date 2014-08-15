@@ -10,7 +10,7 @@ Usage
 
 ::
 
-	gitime invoice [-h] [-n] [--rate [RATE]] [--round [ROUND]] [--list] [name]
+	gitime invoice [-h] [-n] [-r [RATE]] [-o [ROUNDING]] [--list] [name]
 
 Details
 -------
@@ -38,8 +38,8 @@ Create a new invoice, and make it the active invoice where future commits are se
 
 Set the hourly rate in dollars to be used on the invoice specified by :code:`name`.
 
---round [ROUND]
-***************
+--round [ROUNDING], --rounding [ROUNDING], -o [ROUNDING]
+********************************************************
 
 Choose how to round hours worked on the invoice specified by :code:`name`. This defaults to the nearest hour. For example, 2.71 hours will be rounded to 3 hours. If this setting is set to 0.5, 2.71 hours rounds to 2.5 hours.
 
