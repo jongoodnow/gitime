@@ -1,5 +1,5 @@
-Gitime Overview
-===============
+Gitime
+======
 
 Gitime lets you keep track of your billable hours along with your commits. Build an invoice with your tasks and hours worked from your commit messages.
 

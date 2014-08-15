@@ -1,4 +1,4 @@
-####dev
+####1.0.0
 
 * Support for Python 3.4
 * Reinstalling the app no longer resets the database if it already exists
@@ -10,6 +10,7 @@
 * Fixed RST inline code in docs
 * `gitime invoice` now assumes the active invoice if no name is specified
 * The `--round` flag can now be activated with `--rounding` or `-o`
+* Flags in the help text now have consistant order
 
 ####1.3a
 

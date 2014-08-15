@@ -61,7 +61,7 @@ You'll need two things installed to use gitime:
 
 Install the latest release with::
 
-    $ pip install gitime --pre
+    $ pip install gitime
 
 Or install the development version with::
 
@@ -78,7 +78,7 @@ class install(_install):
 
 setup(
     name="gitime",
-    version="1.3a",
+    version="1.0.0",
     description="Build an invoice with your tasks and hours worked from your commit messages",
     long_description=long_description,
     author="Jonathan Goodnow",
