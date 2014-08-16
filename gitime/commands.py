@@ -7,7 +7,6 @@ import sys
 import textwrap
 import os
 import csv
-import xlsxwriter
 from datetime import datetime
 
 def settings_main(args):
@@ -204,7 +203,13 @@ def export_invoice_main(args):
             writer.writerow(['Total Time Worked:', "%s" %inv.total_hours()])
             writer.writerow(['Total Charges:', "$%.2f" %inv.total_earnings()])
     elif args.format == 'xlsx':
-        if filename[-4:] != '.xlsx': 
+        try:
+            import xlsxwriter
+        except ImportError:
+            print(textwrap.fill(("You appear to be missing the xlsxwriter module "
+                "required for Excel workbook export. You can install it with the "
+                "command `pip install xlsxwriter`."), 80), file=sys.stderr)
+        if filename[-5:] != '.xlsx': 
             filename += '.xlsx'
         workbook = xlsxwriter.Workbook(filename)
         worksheet = workbook.add_worksheet()

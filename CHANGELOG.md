@@ -1,3 +1,7 @@
+####dev
+
+* xlsxwriter now only required when exporting to xlsx
+
 ####1.0.0
 
 * Support for Python 3.4
