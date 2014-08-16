@@ -209,6 +209,7 @@ def export_invoice_main(args):
             print(textwrap.fill(("You appear to be missing the xlsxwriter module "
                 "required for Excel workbook export. You can install it with the "
                 "command `pip install xlsxwriter`."), 80), file=sys.stderr)
+            sys.exit()
         if filename[-5:] != '.xlsx': 
             filename += '.xlsx'
         workbook = xlsxwriter.Workbook(filename)
