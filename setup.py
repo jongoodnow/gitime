@@ -67,6 +67,7 @@ Or install the development version with::
 
     $ git clone https://github.com/jongoodnow/gitime.git
     $ cd gitime
+    $ pip install -r requirements.txt
     $ python setup.py install
 """
 
@@ -93,6 +94,7 @@ setup(
         'Natural Language :: English',
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3.4',
         'Topic :: Utilities'
     ],
     packages=['gitime'],

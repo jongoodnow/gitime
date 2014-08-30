@@ -41,7 +41,7 @@ Set the hourly rate in dollars to be used on the invoice specified by :code:`nam
 --round [ROUNDING], --rounding [ROUNDING], -o [ROUNDING]
 ********************************************************
 
-Choose how to round hours worked on the invoice specified by :code:`name`. This defaults to the nearest hour. For example, 2.71 hours will be rounded to 3 hours. If this setting is set to 0.5, 2.71 hours rounds to 2.5 hours.
+Choose how to round hours worked on the invoice specified by :code:`name`. This defaults to the nearest quarter hour. For example, 2.71 hours will be rounded to 3 hours. If this setting is set to 0.5, 2.71 hours rounds to 2.5 hours.
 
 --list, -l
 **********

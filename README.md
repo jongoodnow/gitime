@@ -60,4 +60,5 @@ Or install the development version with:
 
 	$ git clone https://github.com/jongoodnow/gitime.git
 	$ cd gitime
+	$ pip install -r requirements.txt
 	$ python setup.py install
