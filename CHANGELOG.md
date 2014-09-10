@@ -1,5 +1,6 @@
 ####dev
 
+* Linux and Mac DB permissions correctly set
 * xlsxwriter now only required when exporting to xlsx
 
 ####1.0.0
