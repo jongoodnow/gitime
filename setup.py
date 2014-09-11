@@ -7,7 +7,7 @@ from setuptools import setup
 from setuptools.command.install import install as _install
 import gitime.database as db
 
-long_description="""
+long_description = """
 Keep track of your billable hours along with your commits. Gitime lets you build an invoice with your tasks and hours worked from your commit messages.
 
 `Read the docs <http://gitime.readthedocs.org/en/latest/>`_ for more details
@@ -71,11 +71,18 @@ Or install the development version with::
     $ python setup.py install
 """
 
+
 class install(_install):
     def run(self):
         _install.run(self)
         if not db.db_exists():
+            DB_DIR = os.path.expanduser('~/.gitime')
+            if not os.path.exists(DB_DIR):
+                os.makedirs(DB_DIR)
+                if os.name in ('posix', 'mac'):
+                    db.set_unix_permissions(DB_DIR)
             db.first_time_setup()
+
 
 setup(
     name="gitime",

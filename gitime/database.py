@@ -10,13 +10,8 @@ try:
 except NameError:
     unicode = str
 
-# set up the database folder if it doesn't exist
+# locate the database
 DB_DIR = os.path.expanduser('~/.gitime')
-if not os.path.exists(DB_DIR):
-    os.makedirs(DB_DIR)
-    if os.name in ('posix', 'mac'):
-        set_unix_permissions(DB_DIR)
-
 PATHCHAR = '\\' if os.name == 'nt' else '/'
 DB_NAME = PATHCHAR.join((DB_DIR, 'gitime.db'))
 
