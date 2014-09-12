@@ -86,7 +86,7 @@ class install(_install):
 
 setup(
     name="gitime",
-    version="1.0.0",
+    version="1.0.1",
     description="Build an invoice with your tasks and hours worked from your commit messages",
     long_description=long_description,
     author="Jonathan Goodnow",
