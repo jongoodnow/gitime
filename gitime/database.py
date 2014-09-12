@@ -31,21 +31,26 @@ def db_exists():
     return os.path.isfile(DB_NAME)
 
 
-def _db_connect(action):
+def _db_connect(action, new_db=False):
     """ Connects to the database, does something, and closes.
         Should only be called in `database.py`.
         Args:
         * action - a function with args 
                    (database connection object, database cursor)
+        Opts:
+        * new_db - if true, don't confirm that the database exists
     """
+    if not new_db and not db_exists():
+        print("Your database can't be found. Reinstalling should fix this.",
+            file=sys.stderr)
+        sys.exit()
     conn = results = None
     try:
         conn = sqlite3.connect(DB_NAME)
         c = conn.cursor()
         results = action(conn, c)
     except sqlite3.Error as e:
-        print("Database Error: %s" %e, file=sys.stderr)
-        sys.exit()
+        raise
     finally:
         if conn:
             conn.close()
@@ -85,7 +90,7 @@ def first_time_setup():
         """)
         conn.commit()
 
-    _db_connect(setup_action)
+    _db_connect(setup_action, True)
     if os.name in ('posix', 'mac'):
         set_unix_permissions(DB_NAME)
 

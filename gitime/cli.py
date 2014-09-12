@@ -1,6 +1,7 @@
-from __future__ import unicode_literals
+from __future__ import unicode_literals, print_function
 import argparse
 import sys
+import textwrap
 import gitime
 import gitime.commands as commands
 
@@ -132,4 +133,13 @@ def main():
             commands.commit_main(sys.argv)
     else:
         # every other command gets handled by argparse
-        cmd_handler()
+        try:
+            cmd_handler()
+        except Exception as e:
+            print(textwrap.fill((
+                "GITIME ERROR: Something has caused gitime to crash. "
+                "If the issue persists, please seek help by opening a "
+                "ticket on Github at <https://github.com/jongoodnow/gitime/issues>. "
+                "Please include the following error message: "), 
+            80), file=sys.stderr)
+            print(e, file=sys.stderr)

@@ -2,6 +2,8 @@
 
 * Linux and Mac DB permissions correctly set
 * xlsxwriter now only required when exporting to xlsx
+* Better exception handling
+* Warns you if your database is missing
 
 ####1.0.0
 
