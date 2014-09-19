@@ -1,3 +1,7 @@
+####dev
+
+* Using Six for Python 2 and 3 compatibility
+
 ####1.0.1
 
 * Linux and Mac DB permissions correctly set

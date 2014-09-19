@@ -3,12 +3,7 @@ import sqlite3
 import sys
 import os
 import stat
-
-# hack to get python 3 to not break when unicode is used
-try:
-    unicode
-except NameError:
-    unicode = str
+import six
 
 # locate the database
 DB_DIR = os.path.expanduser('~/.gitime')
@@ -146,7 +141,7 @@ def query_invoice(unique):
             raise Exception("Rowid %d not in table invoice" %unique)
         return _query(lambda c: c.execute("SELECT * FROM invoice WHERE rowid=?", 
             (unique,)), False)
-    elif type(unique) in (str, unicode):
+    elif isinstance(unique, six.string_types):
         return _query(lambda c: c.execute("SELECT *, rowid FROM invoice WHERE name=?", 
             (unique,)), False)
     else:

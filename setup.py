@@ -114,5 +114,5 @@ setup(
         'install': install
     },
     test_suite='tests',
-    install_requires=['xlsxwriter']
+    install_requires=['xlsxwriter', 'six']
 )
