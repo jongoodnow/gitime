@@ -13,13 +13,19 @@ def add_subcommand(subparsers, name, help, func, args):
 
 
 def cmd_handler(cmd=None):
-    parser = argparse.ArgumentParser(description='Keep track of your billable hours along with your commits.')
-    parser.add_argument('-v', '--version', help='Show the version of gitime installed.', action='version', version="gitime %s" %gitime.__version__)
+    parser = argparse.ArgumentParser(
+        description='Keep track of your billable hours along with your commits.')
+    parser.add_argument('-v', '--version', 
+        help='Show the version of gitime installed.', 
+        action='version', 
+        version="gitime %s" %gitime.__version__)
 
     subparsers = parser.add_subparsers()
 
     # include a commit subcommand for the help, even though it isn't used.
-    add_subcommand(subparsers, 'commit', 'Run a regular git commit, but also log your time.', commands.commit_main, [])
+    add_subcommand(subparsers, 'commit', 
+        'Run a regular git commit, but also log your time.', 
+        commands.commit_main, [])
 
     add_subcommand(subparsers, 'set', 'Set up some default options.', commands.settings_main, [
         (['-r', '--rate',], {
@@ -124,9 +130,15 @@ def main():
         if sys.argv[2] in ('-h', '--help'):
             # however, argparse makes a nice help screen, so we'll use
             # argparse here only if the user asks for help
-            parser = argparse.ArgumentParser(description='Run a regular git commit, but also log your time.')
-            parser.add_argument('--fake', help='Add this commit to the invoice, but don\'t make an actual commit.', action='store_true')
-            parser.add_argument('--hours', help='Manually enter the time worked instead of using the timer.', nargs='?', default='argparse.SUPPRESS')
+            parser = argparse.ArgumentParser(
+                description='Run a regular git commit, but also log your time.')
+            parser.add_argument('--fake', 
+                help='Add this commit to the invoice, but don\'t make an actual commit.', 
+                action='store_true')
+            parser.add_argument('--hours', 
+                help='Manually enter the time worked instead of using the timer.',
+                nargs='?', 
+                default='argparse.SUPPRESS')
             args = parser.parse_args()
         else:
             commands.commit_main(sys.argv)

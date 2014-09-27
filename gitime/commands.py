@@ -153,8 +153,9 @@ def commit_main(args):
         hours = u.time_tracked(inv)
         if hours <= 0:
             print(textwrap.fill((
-                "GITIME ERROR: You didn't specify a number of hours, and the timer hasn't recorded anything. "
-                "Run this command with the `--hours <hour count>` flag, or use the timer to track your time. "
+                "GITIME ERROR: You didn't specify a number of hours, and the "
+                "timer hasn't recorded anything. Run this command with the "
+                "`--hours <hour count>` flag, or use the timer to track your time. "
                 "Your commit has NOT been made."), 80), file=sys.stderr)
             sys.exit()
         u.reset_timer()
