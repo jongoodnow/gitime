@@ -7,8 +7,7 @@ import six
 
 # locate the database
 DB_DIR = os.path.expanduser('~/.gitime')
-PATHCHAR = '\\' if os.name == 'nt' else '/'
-DB_NAME = PATHCHAR.join((DB_DIR, 'gitime.db'))
+DB_NAME = os.path.join(DB_DIR, 'gitime.db')
 
 
 def set_unix_permissions(path):
