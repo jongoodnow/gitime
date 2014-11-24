@@ -90,7 +90,7 @@ setup(
     description="Build an invoice with your tasks and hours worked from your commit messages",
     long_description=long_description,
     author="Jonathan Goodnow",
-    author_email="goodnow.jonathan@gmail.com",
+    author_email="jon@goodnow.io",
     url="https://github.com/jongoodnow/gitime",
     keywords=['git', 'invoice', 'timer'],
     license="MIT",
