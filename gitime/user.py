@@ -59,7 +59,8 @@ class User(object):
     def time_tracked(self, inv=None):
         rounding = inv.rounding if inv else self.rounding
         if self.timer_running:
-            return round((unix_now() - self.timer_start + self.timer_total) / 3600.0 / rounding) * rounding
+            return round((unix_now() - self.timer_start + self.timer_total
+                ) / 3600.0 / rounding) * rounding
         else:
             return round(self.timer_total / 3600.0 / rounding) * rounding
 

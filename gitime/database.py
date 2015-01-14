@@ -114,9 +114,9 @@ def _query(statement, fetchall=True):
     """ Runs an execute command. It should be a SELECT statement.
         opts:
         * fetchall - in most cases, fetchall should be True because it cannot
-                     be known for sure that there is only one result. But queries
-                     that involve a rowid are guaranteed to return one result,
-                     so fetchone is a more useful command.
+                     be known for sure that there is only one result. But 
+                     queries that involve a rowid are guaranteed to return one 
+                     result, so fetchone is a more useful command.
     """
 
     def query_action(conn, c):
@@ -141,8 +141,8 @@ def query_invoice(unique):
         return _query(lambda c: c.execute("SELECT * FROM invoice WHERE rowid=?", 
             (unique,)), False)
     elif isinstance(unique, six.string_types):
-        return _query(lambda c: c.execute("SELECT *, rowid FROM invoice WHERE name=?", 
-            (unique,)), False)
+        return _query(lambda c: c.execute(
+            "SELECT *, rowid FROM invoice WHERE name=?", (unique,)), False)
     else:
         raise Exception("Invoice unique identifier not valid type.")
 
@@ -154,8 +154,8 @@ def query_commit(rowid):
 
 def query_invoice_commit_meta(rowid):
     """ List of tuples of commit metadata. """
-    return _query(lambda c: c.execute("SELECT * FROM gtcommit WHERE commit_invoice=?", 
-        (rowid,)))
+    return _query(lambda c: c.execute(
+        "SELECT * FROM gtcommit WHERE commit_invoice=?", (rowid,)))
 
 
 def invoice_count():

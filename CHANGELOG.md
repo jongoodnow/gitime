@@ -1,6 +1,7 @@
 ####dev
 
 * Using Six for Python 2 and 3 compatibility
+* Better code! It should be easier to contribute now.
 
 ####1.0.1
 

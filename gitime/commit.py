@@ -3,36 +3,39 @@ import sys
 import re
 import math
 import time
+from gitime import fprintf
 from gitime.user import User
 from gitime.invoice import Invoice
 import gitime.database as db
 
 class Commit(object):
 
-    def __init__(self, message, hours, invoice, date=None, rowid=None, new=True):
-        """ creates a new commit and adds it to the database. To access
-            an existing commit, do not access this constructor directly.
-            Instead, use the `access` class method.
-            Args:
-            * message - the commit message
-            * hours - the hours worked
-            * invoice - the invoice rowid, or name
-            * date - unix date of commit. Use None to determine the date
-                     automatically
-            * rowid - this is provided by the `access` method
-            * new - create a new commit. If false, access an existing one
-        """
-        self.message = message
-        self.hours = hours
-        self.invoice = Invoice(invoice)
-        self.date = date if date is not None else math.floor(time.time())
-        if new:
-            self.rowid = db.insert_commit(
-                self.message, self.date, self.hours, self.invoice.rowid)
-        elif rowid:
-            self.rowid = rowid
-        else:
-            raise Exception("Rowid must be provided to access an existing commit")
+    def __init__(self, message, hours, invoice, date=None, rowid=None, 
+        new=True):
+            """ creates a new commit and adds it to the database. To access
+                an existing commit, do not access this constructor directly.
+                Instead, use the `access` class method.
+                Args:
+                * message - the commit message
+                * hours - the hours worked
+                * invoice - the invoice rowid, or name
+                * date - unix date of commit. Use None to determine the date
+                         automatically
+                * rowid - this is provided by the `access` method
+                * new - create a new commit. If false, access an existing one
+            """
+            self.message = message
+            self.hours = hours
+            self.invoice = Invoice(invoice)
+            self.date = date if date is not None else math.floor(time.time())
+            if new:
+                self.rowid = db.insert_commit(
+                    self.message, self.date, self.hours, self.invoice.rowid)
+            elif rowid:
+                self.rowid = rowid
+            else:
+                raise Exception(
+                    "Rowid must be provided to access an existing commit")
 
     @classmethod
     def access(cls, rowid):
@@ -54,8 +57,8 @@ def parse_hours_flag(args):
         try:
             hours = float(hours)
         except ValueError:
-            print("GITIME ERROR: %s is not a valid amount of hours. Your commit was NOT made. Try again." %hours,
-                file=sys.stderr)
+            fprintf("GITIME ERROR: %s is not a valid amount of hours. Your "
+                "commit was NOT made. Try again." %hours, file=sys.stderr)
             sys.exit()
         else:
             del args[pos + 1]
@@ -72,27 +75,31 @@ def parse_commit_message(args):
         Single quotes are allowed too.
         `args` is a list that should be formatted exactly as sys.argv
     """
-    reg = re.compile(r"(\-\w*m\w*|\-\-message)(\s*|(='(?:\\.|[^'])*'|\"(?:\\.|[^\"])*\"))")
-    scan = [index for index, val in enumerate(args) for mat in [reg.search(val)] if mat]
+    reg = re.compile(
+        r"(\-\w*m\w*|\-\-message)(\s*|(='(?:\\.|[^'])*'|\"(?:\\.|[^\"])*\"))")
+    scan = [index for index, val in enumerate(args) 
+        for mat in [reg.search(val)] if mat]
     if not scan:
         return False
     if len(scan) > 1:
-        print("GITIME ERROR: Your commit contains more than one message. Your commit was NOT made. Try again.",
-            file=sys.stderr)
+        fprintf("GITIME ERROR: Your commit contains more than one message. "
+            "Your commit was NOT made. Try again.", file=sys.stderr)
         sys.exit()
     index = scan[0]
     # check if the format is `--message="some message"`
-    format_reg = re.search(r"='((\\.|[^'])*?)'|\"((\\.|[^\"])*?)\"", args[index])
+    format_reg = re.search(r"='((\\.|[^'])*?)'|\"((\\.|[^\"])*?)\"", 
+        args[index])
     if format_reg is not None:
         return format_reg.group().strip('=').strip('"').strip("'")
     elif len(args) < index + 2:
-        print("GITIME ERROR: Your commit doesn't contain a message. Your commit was NOT made. Try again.",
-            file=sys.stderr)
+        fprintf("GITIME ERROR: Your commit doesn't contain a message. Your "
+            "commit was NOT made. Try again.", file=sys.stderr)
         sys.exit()
     else:
         ret = args[index + 1]
         # escape unescaped quotes so that we can add quotes around the message
         args[index + 1] = re.sub(r'(?<!\\)(?:\\\\)*"', '\\"', args[index + 1])
-        # add quotes to the message so that git can understand it when the command is run
+        # add quotes to the message so that git can understand it 
+        # when the command is run
         args[index + 1] = "".join(['"', args[index + 1], '"'])
         return ret

@@ -1,6 +1,7 @@
 from __future__ import unicode_literals, print_function
 import sys
 import textwrap
+from gitime import fprintf
 from gitime.user import User
 import gitime.database as db
 
@@ -19,8 +20,8 @@ class Invoice(object):
         meta = db.query_invoice(unique)
         if meta:
             if new:
-                print("An invoice with the name %s already exists. You can't make a new one with that name." %unique,
-                    file=sys.stderr)
+                print("An invoice with the name %s already exists. You can't "
+                    "make a new one with that name." %unique, file=sys.stderr)
                 sys.exit()
             self.name = meta[0]
             self.rate = meta[1]
@@ -34,13 +35,14 @@ class Invoice(object):
                 raise InvoiceNotFound
             self.name = unique
             if rate is None and self.user.rate == 0:
-                print(textwrap.fill((
-                    "WARNING: Your default hourly rate is set to zero. "
-                    "This means that no earnings will be recorded. "
-                    "You can set your default rate with `gitime set -r <rate>` or "
-                    "set the rate for this invoice with `gitime invoice <invoice name> -r <rate>`."), 80))
+                fprintf("WARNING: Your default hourly rate is set to zero. This"
+                    " means that no earnings will be recorded. You can set your"
+                    " default rate with `gitime set -r <rate>` or set the rate "
+                    "for this invoice with `gitime invoice <invoice name> -r "
+                    "<rate>`.")
             self.rate = rate if rate is not None else self.user.rate
-            self.rounding = rounding if rounding is not None else self.user.rounding
+            self.rounding = (rounding if rounding is not None 
+                else self.user.rounding)
             self.rowid = db.insert_invoice(self.name, self.rate, self.rounding)
 
     def set_active(self):
@@ -50,7 +52,8 @@ class Invoice(object):
         try:
             r = float(r)
         except ValueError:
-            print('Rates must be provided in the form of a number.', file=sys.stderr)
+            fprintf('Rates must be provided in the form of a number.', 
+                file=sys.stderr)
             sys.exit()
         self.rate = r
         db.update(lambda c: c.execute("""
@@ -61,7 +64,9 @@ class Invoice(object):
         try:
             r = float(r)
         except ValueError:
-            print('Rounding numbers must be provided in the form of a number.', file=sys.stderr)
+            fprintf(
+                'Rounding numbers must be provided in the form of a number.', 
+                file=sys.stderr)
             sys.exit()
         self.rounding = r
         db.update(lambda c: c.execute("""

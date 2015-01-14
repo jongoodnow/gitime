@@ -15,7 +15,8 @@ def add_subcommand(subparsers, name, help, func, args):
 
 def cmd_handler(cmd=None):
     parser = argparse.ArgumentParser(
-        description='Keep track of your billable hours along with your commits.')
+        description='Keep track of your billable hours along with your commits.'
+    )
     parser.add_argument('-v', '--version', 
         help='Show the version of gitime installed.', 
         action='version', 
@@ -28,7 +29,8 @@ def cmd_handler(cmd=None):
         'Run a regular git commit, but also log your time.', 
         commands.commit_main, [])
 
-    add_subcommand(subparsers, 'set', 'Set up some default options.', commands.settings_main, [
+    add_subcommand(subparsers, 'set', 'Set up some default options.', 
+        commands.settings_main, [
         (['-r', '--rate',], {
             'nargs': '?',
             'default': argparse.SUPPRESS,
@@ -148,10 +150,11 @@ def main():
         try:
             cmd_handler()
         except Exception as e:
-            print(textwrap.fill((
+            gitime.fprintf(
                 "GITIME ERROR: Something has caused gitime to crash. "
                 "If the issue persists, please seek help by opening a "
-                "ticket on Github at <https://github.com/jongoodnow/gitime/issues>. "
-                "Please include the following error message: "), 
-            80), file=sys.stderr)
-            print(e, file=sys.stderr)
+                "ticket on Github at "
+                "<https://github.com/jongoodnow/gitime/issues>. "
+                "Please include the following error message: ", 
+                file=sys.stderr)
+            fprintf(e, file=sys.stderr)
